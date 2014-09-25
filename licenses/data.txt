@@ -1,0 +1,9 @@
+* Unless specified otherwise, data (images, animations, levels, sounds, musics...) are under the following license and copyright attribution:
+
+License: this is a free work, you can copy, distribute, and modify it under the terms of the CC-BY-SA 3.0 license (see https://creativecommons.org/licenses/by-sa/3.0/).
+Authors: devnewton <devnewton@bci.im>
+
+* ProFontWindows.ttf
+
+License: MIT, see ProFontWindows.txt
+Author: Carl Osterwald, Stephen C. Gilardi, Andrew Welch
