@@ -1,0 +1,117 @@
+#pragma once
+
+#include <type_traits>
+
+namespace bourrines {
+
+    template<typename... Components>
+    class component_container {
+    };
+
+    // recursive inheritance :D
+
+    template< typename Component, typename... Components >
+    class component_container< Component, Components... > : private component_container< Components... > {
+    public:
+        // we implement get() by checking wether element type match with
+        // request type
+
+        template< typename C >
+        typename std::enable_if< std::is_same< C, Component >::value, C& >::type get() {
+            return component_;
+        }
+
+        template< typename C >
+        typename std::enable_if< !(std::is_same< C, Component >::value), C& >::type get() {
+            return component_container < Components...>::template get<C>();
+        }
+
+        template< typename C >
+        typename std::enable_if< std::is_same< C, Component >::value, const C& >::type get() const {
+            return component_;
+        }
+
+        template< typename C >
+        typename std::enable_if< !(std::is_same< C, Component >::value), const C& >::type get() const {
+            return component_container < Components...>::template get<C>();
+        }
+
+        template< typename C >
+        typename std::enable_if< std::is_same< C, Component >::value, C& >::type add() {
+            is_active_ = true;
+            return component_;
+        }
+
+        template< typename C >
+        typename std::enable_if< !(std::is_same< C, Component >::value), C& >::type add() {
+            return component_container < Components...>::template add<C>();
+        }
+
+        template< typename C >
+        typename std::enable_if< std::is_same< C, Component >::value, void >::type remove() {
+            is_active_ = false;
+        }
+
+        template< typename C >
+        typename std::enable_if< !(std::is_same< C, Component >::value), void >::type remove() {
+            component_container < Components...>::template remove<C>();
+        }
+
+        template< typename C >
+        typename std::enable_if< std::is_same< C, Component >::value, bool >::type has() const {
+            return is_active_;
+        }
+
+        template< typename C >
+        typename std::enable_if< !(std::is_same< C, Component >::value), bool >::type has() {
+            return component_container < Components...>::template has<C>();
+        }
+
+    private:
+        Component component_;
+        bool is_active_;
+    };
+
+    typedef int entity;
+
+    template<typename... Components>
+    class world {
+    public:
+
+        entity create_entity() {
+            entities_components.push_back(ComponentContainer());
+            return entities_components.size() - 1;
+        }
+
+        template< typename C >
+        C& get(entity e) {
+            return entities_components[e].get<C>();
+        }
+
+        template< typename C >
+        const C& get(entity e) const {
+            return entities_components[e].get<C>();
+        }
+
+        template< typename C >
+        C& add(entity e) {
+            return entities_components[e].add<C>();
+        }
+
+        template< typename C >
+        void remove(entity e) {
+            return entities_components[e].remove<C>();
+        }
+
+        template< typename C >
+        bool has(entity e) {
+            return entities_components[e].has<C>();
+        }
+
+    private:
+        typedef component_container < Components...> ComponentContainer;
+        std::vector<ComponentContainer> entities_components;
+
+    };
+
+}
