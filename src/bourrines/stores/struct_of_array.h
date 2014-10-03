@@ -106,8 +106,13 @@ namespace bourrines {
             resize_components(entities_components_size_);
             return e;
         }
+        
+        entity recycle_entity() {
+            //TODO
+            return null_entity;
+        }
 
-        void recycle_entity(entity e) {
+        void kill_entity(entity e) {
             remove_components_t remover(e);
             this->for_each(remover);
         }

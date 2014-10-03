@@ -78,8 +78,13 @@ namespace bourrines {
             return entities_components_.size() - 1;
         }
 
-        void recycle_entity(entity e) {
+        void kill_entity(entity e) {
             entities_components_[e] = ComponentContainer();
+        }
+
+        entity recycle_entity() {
+            //TODO
+            return null_entity;
         }
 
         template< typename C >

@@ -17,7 +17,7 @@ struct Life {
 
 
 void test_bourrines() {
-    bourrines::struct_of_array_store<Pos, Life> world;
+    bourrines::default_world<Pos, Life> world;
     //bourrines::array_of_struct_store<Pos, Life> world;
     bourrines::entity entity = world.create_entity();
 
@@ -49,7 +49,7 @@ void test_bourrines() {
         std::cout << "entity has no pos" << std::endl;
     }
     
-    world.recycle_entity(entity);
+    world.kill_entity(entity);
 }
 
 int main(int, char**) {
