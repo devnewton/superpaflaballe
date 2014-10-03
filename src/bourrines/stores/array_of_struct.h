@@ -1,20 +1,17 @@
 #pragma once
 
 #include <type_traits>
+#include "../entity.h"
 
 namespace bourrines {
 
     template<typename... Components>
-    class component_container {
+    class component_struct {
     };
 
-    // recursive inheritance :D
-
     template< typename Component, typename... Components >
-    class component_container< Component, Components... > : private component_container< Components... > {
+    class component_struct< Component, Components... > : private component_struct< Components... > {
     public:
-        // we implement get() by checking wether element type match with
-        // request type
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, C& >::type get() {
@@ -23,7 +20,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< !(std::is_same< C, Component >::value), C& >::type get() {
-            return component_container < Components...>::template get<C>();
+            return component_struct < Components...>::template get<C>();
         }
 
         template< typename C >
@@ -33,7 +30,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< !(std::is_same< C, Component >::value), const C& >::type get() const {
-            return component_container < Components...>::template get<C>();
+            return component_struct < Components...>::template get<C>();
         }
 
         template< typename C >
@@ -44,7 +41,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< !(std::is_same< C, Component >::value), C& >::type add() {
-            return component_container < Components...>::template add<C>();
+            return component_struct < Components...>::template add<C>();
         }
 
         template< typename C >
@@ -54,7 +51,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< !(std::is_same< C, Component >::value), void >::type remove() {
-            component_container < Components...>::template remove<C>();
+            component_struct < Components...>::template remove<C>();
         }
 
         template< typename C >
@@ -64,7 +61,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< !(std::is_same< C, Component >::value), bool >::type has() {
-            return component_container < Components...>::template has<C>();
+            return component_struct < Components...>::template has<C>();
         }
 
     private:
@@ -72,10 +69,8 @@ namespace bourrines {
         bool is_active_;
     };
 
-    typedef int entity;
-
     template<typename... Components>
-    class world {
+    class array_of_struct_store {
     public:
 
         entity create_entity() {
@@ -109,9 +104,8 @@ namespace bourrines {
         }
 
     private:
-        typedef component_container < Components...> ComponentContainer;
+        typedef component_struct < Components...> ComponentContainer;
         std::vector<ComponentContainer> entities_components;
-
     };
 
 }
