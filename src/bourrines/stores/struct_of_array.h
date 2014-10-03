@@ -77,7 +77,7 @@ namespace bourrines {
         }
 
         typedef std::vector<boost::optional<Component>> component_vector;
-        
+
         component_vector& get_components() {
             return components_;
         }
@@ -97,11 +97,21 @@ namespace bourrines {
     class struct_of_array_store : public struct_of_array_store_base<Components...> {
     public:
 
-        entity create_entity() {
-            entities_.push_back(1);
-            resize_components(entities_.size());
-            return entities_.size() - 1;
+        struct_of_array_store()
+        : entities_components_size_(0) {
         }
+
+        entity create_entity() {
+            entity e = entities_components_size_++;
+            resize_components(entities_components_size_);
+            return e;
+        }
+
+        void recycle_entity(entity e) {
+            remove_components_t remover(e);
+            this->for_each(remover);
+        }
+
     private:
 
         struct resize_components_t {
@@ -123,7 +133,21 @@ namespace bourrines {
             this->for_each(resizer);
         }
 
-        boost::dynamic_bitset<> entities_;
+        struct remove_components_t {
+
+            remove_components_t(entity e)
+            : e_(e) {
+            }
+
+            entity e_;
+
+            template<typename ME>
+            void operator()(ME me) {
+                me->get_components()[e_] = boost::none;
+            }
+        };
+
+        std::size_t entities_components_size_;
     };
 
 }

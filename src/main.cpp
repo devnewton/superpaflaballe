@@ -15,35 +15,10 @@ struct Life {
     int life_;
 };
 
-template<typename T>
-void foune() {
-    std::cout << T() << std::endl;
-}
-
-template<>
-void foune<float>() {
-    std::cout << "je suis un float" << std::endl;
-}
-
-template<typename... Components>
-class plop_each {
-public:
-    static void apply() {
-    }
-};
-
-template<typename Component, typename... Components >
-class plop_each< Component, Components... > {
-public:
-    static void apply() {
-        foune<Component>();
-        plop_each<Components...>::apply();
-    }
-};
 
 void test_bourrines() {
-    plop_each<int, float>::apply();
     bourrines::struct_of_array_store<Pos, Life> world;
+    //bourrines::array_of_struct_store<Pos, Life> world;
     bourrines::entity entity = world.create_entity();
 
     if (!world.has<Pos>(entity) && !world.has<Life>(entity)) {
@@ -73,6 +48,8 @@ void test_bourrines() {
     if (!world.has<Pos>(entity)) {
         std::cout << "entity has no pos" << std::endl;
     }
+    
+    world.recycle_entity(entity);
 }
 
 int main(int, char**) {

@@ -74,38 +74,42 @@ namespace bourrines {
     public:
 
         entity create_entity() {
-            entities_components.push_back(ComponentContainer());
-            return entities_components.size() - 1;
+            entities_components_.push_back(ComponentContainer());
+            return entities_components_.size() - 1;
+        }
+
+        void recycle_entity(entity e) {
+            entities_components_[e] = ComponentContainer();
         }
 
         template< typename C >
         C& get(entity e) {
-            return entities_components[e].get<C>();
+            return entities_components_[e].get<C>();
         }
 
         template< typename C >
         const C& get(entity e) const {
-            return entities_components[e].get<C>();
+            return entities_components_[e].get<C>();
         }
 
         template< typename C >
         C& add(entity e) {
-            return entities_components[e].add<C>();
+            return entities_components_[e].add<C>();
         }
 
         template< typename C >
         void remove(entity e) {
-            return entities_components[e].remove<C>();
+            return entities_components_[e].remove<C>();
         }
 
         template< typename C >
         bool has(entity e) {
-            return entities_components[e].has<C>();
+            return entities_components_[e].has<C>();
         }
 
     private:
         typedef component_struct < Components...> ComponentContainer;
-        std::vector<ComponentContainer> entities_components;
+        std::vector<ComponentContainer> entities_components_;
     };
 
 }
