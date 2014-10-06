@@ -18,7 +18,6 @@ struct Life {
 
 void test_bourrines() {
     bourrines::default_world<Pos, Life> world;
-    //bourrines::array_of_struct_store<Pos, Life> world;
     bourrines::entity entity = world.create_entity();
 
     if (!world.has<Pos>(entity) && !world.has<Life>(entity)) {

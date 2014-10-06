@@ -2,7 +2,6 @@
 
 #include <type_traits>
 #include <boost/optional.hpp>
-#include <boost/dynamic_bitset.hpp>
 
 #include "../entity.h"
 
@@ -106,26 +105,12 @@ namespace bourrines {
             entity create_entity() {
                 entity e = entities_components_size_++;
                 resize_components(entities_components_size_);
-                active_entities_.push_back(e);
                 return e;
             }
 
-            entity recycle_entity() {
-                if (!recyclable_entities_.empty()) {
-                    entity e = recyclable_entities_.back();
-                    recyclable_entities_.pop_back();
-                    remove_components_t remover(e);
-                    this->for_each(remover);
-                    active_entities_.push_back(e);
-                    return e;
-                } else {
-                    return null_entity;
-                }
-            }
-
-            void kill_entity(entity e) {
-                active_entities_.erase(active_entities_.begin() + e);
-                recyclable_entities_.push_back(e);
+            void recycle_entity(entity e) {
+                remove_components_t remover(e);
+                this->for_each(remover);
             }
 
         private:
@@ -164,8 +149,6 @@ namespace bourrines {
             };
 
             std::size_t entities_components_size_;
-            std::vector<entity> active_entities_;
-            std::vector<entity> recyclable_entities_;
         };
 
     }

@@ -4,18 +4,13 @@
 
 #include <type_traits>
 #include <boost/optional.hpp>
-#include <boost/intrusive/list.hpp>
 
 namespace bourrines {
 
     namespace array_of_struct {
 
-        struct active_entities_tag;
-
-        typedef boost::intrusive::list_base_hook< boost::intrusive::tag<active_entities_tag> > active_entities_hook;
-
         template<typename... Components>
-        class component_struct : public active_entities_hook {
+        class component_struct {
         };
 
         template< typename Component, typename... Components >
@@ -88,25 +83,11 @@ namespace bourrines {
             entity create_entity() {
                 entity e = entities_components_.size();
                 entities_components_.push_back(ComponentContainer());
-                active_entities_.push_back(entities_components_[e]);
                 return e;
             }
 
-            void kill_entity(entity e) {
-                active_entities_.erase(active_entities_.iterator_to(entities_components_[e]));
-                recyclable_entities_.push_back(e);
-            }
-
-            entity recycle_entity() {
-                if (!recyclable_entities_.empty()) {
-                    entity e = recyclable_entities_.back();
-                    recyclable_entities_.pop_back();
-                    entities_components_[e] = ComponentContainer();
-                    active_entities_.push_back(entities_components_[e]);
-                    return e;
-                } else {
-                    return null_entity;
-                }
+            void recycle_entity(entity e) {
+                entities_components_[e] = ComponentContainer();
             }
 
             template< typename C >
@@ -136,11 +117,8 @@ namespace bourrines {
 
         private:
             typedef component_struct < Components...> ComponentContainer;
-            typedef boost::intrusive::list< ComponentContainer, boost::intrusive::base_hook<active_entities_hook> > active_entities_list;
 
             std::vector<ComponentContainer> entities_components_;
-            active_entities_list active_entities_;
-            std::vector<entity> recyclable_entities_;
         };
     }
 
