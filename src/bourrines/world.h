@@ -1,5 +1,7 @@
 #pragma once
 
+#include "system.h"
+
 #include "stores/array_of_struct.h"
 #include "stores/struct_of_array.h"
 
@@ -53,10 +55,16 @@ namespace bourrines {
         bool has(entity e) {
             return store_.has<C>(e);
         }
+        
+        typedef boost::container::flat_set<entity> active_entity_list;
+        
+        const active_entity_list& active_entities() const {
+            return active_entities_;
+        }
 
     private:
         Store store_;
-        boost::container::flat_set<entity> active_entities_;
+        active_entity_list active_entities_;
         std::vector<entity> recyclable_entities_;
     };
 
