@@ -10,32 +10,36 @@ namespace bourrines {
     class system {
     public:
 
-        virtual void created(entity e) {
+        virtual void created(entity) {
         };
 
-        virtual void killed(entity e) {
+        virtual void killed(entity) {
         };
 
-        virtual void changed(entity e) {
+        virtual void changed(entity) {
         };
 
-        virtual void process() {
+        virtual void process(const active_entity_list& ) {
         }
 
-        void set_world(World& world) {
+        void set_world(World* world) {
             world_ = world;
         }
 
+        const World& world() {
+            return *world_;
+        }
+
     protected:
-        World& world_;
+        World* world_;
     };
 
     template<typename World>
     class processing_system : public system<World> {
     public:
 
-        virtual void process() {
-            for (entity e : this->world_.active_entities()) {
+        virtual void process(const active_entity_list& entities) {
+            for (entity e : entities) {
                 process(e);
             }
         }
@@ -46,6 +50,15 @@ namespace bourrines {
     template<typename World>
     class selective_processing_system : public system<World> {
     public:
+
+        virtual void process(const active_entity_list&) {
+            for (entity e : entities_) {
+                process(e);
+            }
+        }
+
+        virtual void process(entity e) = 0;
+
         virtual bool accept(entity e) = 0;
 
         virtual void created(entity e) {

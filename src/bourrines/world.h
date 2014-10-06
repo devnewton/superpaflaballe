@@ -5,13 +5,15 @@
 #include "stores/array_of_struct.h"
 #include "stores/struct_of_array.h"
 
-#include <boost/container/flat_set.hpp>
+#include <boost/ptr_container/ptr_map.hpp>
 
 namespace bourrines {
 
     template<typename Store>
     class world {
     public:
+        typedef class world<Store> this_type;
+        typedef system<this_type> system_type;
 
         entity create_entity() {
             entity e;
@@ -23,12 +25,30 @@ namespace bourrines {
                 e = store_.create_entity();
             }
             active_entities_.insert(e);
+            for (const auto& it : systems_) {
+                it.second->created(e);
+            }
             return e;
         }
 
         void kill_entity(entity e) {
             active_entities_.erase(e);
             recyclable_entities_.push_back(e);
+            for (const auto& it : systems_) {
+                it.second->killed(e);
+            }
+        }
+
+        void changed(entity e) {
+            for (const auto& it : systems_) {
+                it.second->changed(e);
+            }
+        }
+
+        void tick() {
+            for (const auto& it : systems_) {
+                it.second->process(active_entities_);
+            }
         }
 
         template< typename C >
@@ -55,17 +75,19 @@ namespace bourrines {
         bool has(entity e) {
             return store_.has<C>(e);
         }
-        
-        typedef boost::container::flat_set<entity> active_entity_list;
-        
-        const active_entity_list& active_entities() const {
-            return active_entities_;
+
+        template<typename S>
+        void add_system(int priority, std::unique_ptr<system_type> s) {
+            s->set_world(this);
+            systems_[priority] = s;
         }
 
     private:
+
         Store store_;
         active_entity_list active_entities_;
         std::vector<entity> recyclable_entities_;
+        boost::ptr_multimap<int, system_type> systems_;
     };
 
     template<typename... Components>
