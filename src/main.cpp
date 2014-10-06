@@ -50,6 +50,11 @@ void test_bourrines() {
     }
     
     world.kill_entity(entity);
+    
+    bourrines::entity newentity = world.create_entity();
+    if (!world.has<Pos>(newentity) && !world.has<Life>(newentity)) {
+         std::cout << "newentity is fresh" << std::endl;
+    }
 }
 
 int main(int, char**) {
