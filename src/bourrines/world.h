@@ -50,7 +50,7 @@ namespace bourrines {
     };
     
     template<typename... Components>
-    class default_world : public world< array_of_struct::store<Components...> > {
+    class default_world : public world< struct_of_array::store<Components...> > {
         
     };
 }
