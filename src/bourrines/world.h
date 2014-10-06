@@ -14,6 +14,10 @@ namespace bourrines {
     public:
         typedef class world<Store> this_type;
         typedef system<this_type> system_type;
+        
+        world()
+        : delta_(1000.0f / 60.0f) {            
+        }
 
         entity create_entity() {
             entity e;
@@ -43,6 +47,14 @@ namespace bourrines {
             for (const auto& it : systems_) {
                 it.second->changed(e);
             }
+        }
+        
+        void set_delta(float delta) {
+            delta_ = delta_;
+        }
+        
+        float delta() const {
+            return delta_;
         }
 
         void tick() {
@@ -88,6 +100,7 @@ namespace bourrines {
         active_entity_list active_entities_;
         std::vector<entity> recyclable_entities_;
         boost::ptr_multimap<int, system_type> systems_;
+        float delta_;
     };
 
     template<typename... Components>
