@@ -1,7 +1,9 @@
 #pragma once
 
-#include <type_traits>
 #include "../entity.h"
+
+#include <type_traits>
+#include <boost/optional.hpp>
 
 namespace bourrines {
 
@@ -15,7 +17,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, C& >::type get() {
-            return component_;
+            return *component_;
         }
 
         template< typename C >
@@ -25,7 +27,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, const C& >::type get() const {
-            return component_;
+            return *component_;
         }
 
         template< typename C >
@@ -35,8 +37,8 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, C& >::type add() {
-            is_active_ = true;
-            return component_;
+            component_ = C();
+            return *component_;
         }
 
         template< typename C >
@@ -46,7 +48,7 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, void >::type remove() {
-            is_active_ = false;
+            component_ = boost::none;
         }
 
         template< typename C >
@@ -56,7 +58,11 @@ namespace bourrines {
 
         template< typename C >
         typename std::enable_if< std::is_same< C, Component >::value, bool >::type has() const {
-            return is_active_;
+            if (component_) {
+                return true;
+            } else {
+                return false;
+            }
         }
 
         template< typename C >
@@ -65,8 +71,7 @@ namespace bourrines {
         }
 
     private:
-        Component component_;
-        bool is_active_;
+        boost::optional<Component> component_;
     };
 
     template<typename... Components>
