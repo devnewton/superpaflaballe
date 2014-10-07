@@ -87,11 +87,16 @@ namespace bourrines {
         bool has(entity e) {
             return store_.has<C>(e);
         }
+        
+        template< typename C >
+        bool has(entity e) const {
+            return store_.has<C>(e);
+        }
 
         template<typename S>
-        void add_system(int priority, std::unique_ptr<system_type> s) {
+        void add_system(int priority, S* s) {
             s->set_world(this);
-            systems_[priority] = s;
+            systems_.insert(priority, s);
         }
 
     private:

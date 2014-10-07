@@ -7,3 +7,8 @@ Authors: devnewton <devnewton@bci.im>
 
 License: MIT, see ProFontWindows.txt
 Author: Carl Osterwald, Stephen C. Gilardi, Andrew Welch
+
+* ned.png
+
+License: this is a free work, you can copy, distribute, and modify it under the terms of the Free Art License 1.3 (FAL1.3.txt file).
+Authors: Geeky Goblin Productions (http://geekygoblin.org/)

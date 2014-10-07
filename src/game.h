@@ -1,5 +1,4 @@
-#ifndef superpaflaballe_sdl_h
-#define superpaflaballe_sdl_h
+#pragma once
 
 #include <SDL.h>
 
@@ -23,4 +22,3 @@ namespace superpaflaballe {
 
 }
 
-#endif

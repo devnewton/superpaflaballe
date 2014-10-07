@@ -115,6 +115,11 @@ namespace bourrines {
                 return entities_components_[e].has<C>();
             }
 
+            template< typename C >
+            bool has(entity e) const {
+                return entities_components_[e].has<C>();
+            }
+
         private:
             typedef component_struct < Components...> ComponentContainer;
 

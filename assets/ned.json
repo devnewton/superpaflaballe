@@ -1,0 +1,17 @@
+{
+  "animations": [
+    {
+      "name": "ned",
+      "frames": [
+        {
+          "duration": 1000000,
+          "image": "ned.png",
+          "u1": 0.0,
+          "v1": 0.0,
+          "u2": 1.0,
+          "v2": 1.0
+        }
+      ]
+    }
+  ]
+}
