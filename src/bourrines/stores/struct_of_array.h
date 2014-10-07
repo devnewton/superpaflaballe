@@ -125,7 +125,7 @@ namespace bourrines {
 
                 template<typename ME>
                 void operator()(ME me) {
-                    me->get_components().resize(2);
+                    me->get_components().resize(size_);
                 }
             };
 
