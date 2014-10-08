@@ -65,7 +65,11 @@ namespace superpaflaballe {
         game& game_;
     };
 
-    bourrines_benchmark::bourrines_benchmark(game& ga, assets& as, int num_entity) {
+    bourrines_benchmark::bourrines_benchmark(game& ga, assets& as, int num_entity, int num_ticks)
+    : remaining_ticks_(num_ticks) {
+        
+        timer_.start();
+        
         world_.add_system(0, new move_system());
         world_.add_system(1, new render_system(ga));
         auto ned_anim = as.animations("ned.json")->first();
@@ -83,9 +87,25 @@ namespace superpaflaballe {
             
             world_.changed(e);
         }
+        
+        timer_.stop();
+        std::cout << "bourrines_benchmark init: " << timer_.format() << std::endl;
+        timer_.start();
+        timer_.stop();
+    }
+    
+    bourrines_benchmark::~bourrines_benchmark() {
+        std::cout << "bourrines_benchmark accumulated ticks: " << timer_.format() << std::endl;
     }
     
     void bourrines_benchmark::tick() {
+        timer_.resume();
         world_.tick();
+        timer_.stop();
+        --remaining_ticks_;
+    }
+    
+    bool bourrines_benchmark::is_finished() {
+        return remaining_ticks_ <= 0;
     }
 }

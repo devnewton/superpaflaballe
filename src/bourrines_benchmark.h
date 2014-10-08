@@ -5,6 +5,8 @@
 #include "assets.h"
 #include "bourrines/bourrines.h"
 
+#include <boost/timer/timer.hpp>
+
 namespace superpaflaballe {
 
     struct pos_component {
@@ -23,11 +25,16 @@ namespace superpaflaballe {
 
     class bourrines_benchmark {
     public:
-        bourrines_benchmark(game& g, assets& a, int num_entity);
+        bourrines_benchmark(game& g, assets& a, int num_entity, int num_ticks);
+        ~bourrines_benchmark();
         
         void tick();
+        
+        bool is_finished();
     private:
         world world_;
+        boost::timer::auto_cpu_timer timer_;
+        int remaining_ticks_;
     };
 
 }

@@ -13,13 +13,16 @@ int main(int, char**) {
         superpaflaballe::assets assets(game);
         superpaflaballe::framerate framerate;
 
-        superpaflaballe::bourrines_benchmark benchmark(game, assets, 100000);
+        superpaflaballe::bourrines_benchmark benchmark(game, assets, 10000, 60 * 10);
         SDL_Event event;
         for (;;) {
             while (SDL_PollEvent(&event)) {
                 if (event.type == SDL_QUIT) {
                     return 0;
                 }
+            }
+            if(benchmark.is_finished()) {
+                return 0;
             }
             SDL_RenderClear(game.renderer());
             benchmark.tick();
