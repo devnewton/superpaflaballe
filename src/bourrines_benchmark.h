@@ -16,12 +16,16 @@ namespace superpaflaballe {
     struct dir_component {
         int dx_, dy_;
     };
+    
+    struct life_component {
+        int life_;
+    };
 
     struct anim_component {
         std::shared_ptr< nanim::play > play_;
     };
 
-    typedef bourrines::default_world<pos_component, dir_component, anim_component> world;
+    typedef bourrines::default_world<pos_component, dir_component, life_component, anim_component> world;
 
     class bourrines_benchmark {
     public:
@@ -31,8 +35,11 @@ namespace superpaflaballe {
         void tick();
         
         bool is_finished();
+        void create_ned();
+        
     private:
         world world_;
+        std::shared_ptr< nanim::animation > ned_anim_;
         boost::timer::auto_cpu_timer timer_;
         int remaining_ticks_;
     };
