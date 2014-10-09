@@ -1,5 +1,4 @@
-#ifndef nanim_h
-#define	nanim_h
+#pragma once
 
 #include <SDL.h>
 #include <memory>
@@ -58,7 +57,7 @@ namespace superpaflaballe {
         };
 
         class animation {
-
+        
         private:
             std::vector<frame> frames_;
             long total_duration_;
@@ -80,6 +79,4 @@ namespace superpaflaballe {
     }
 
 }
-
-#endif
 

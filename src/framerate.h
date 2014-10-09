@@ -1,5 +1,4 @@
-#ifndef superpaflaballe_framerate_h
-#define superpaflaballe_framerate_h
+#pragma once
 
 #include <SDL.h>
 
@@ -26,4 +25,3 @@ namespace superpaflaballe {
 
 }
 
-#endif

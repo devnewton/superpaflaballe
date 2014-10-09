@@ -1,5 +1,4 @@
-#ifndef superpaflaballe_assets_h
-#define superpaflaballe_assets_h
+#pragma once
 
 #include "game.h"
 #include "nanim.h"
@@ -24,5 +23,3 @@ namespace superpaflaballe {
     };
 
 }
-
-#endif

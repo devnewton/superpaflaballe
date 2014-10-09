@@ -1,5 +1,4 @@
-#ifndef superpaflaballe_sdl_exception_h
-#define superpaflaballe_sdl_exception_h
+#pragma once
 
 #include <SDL.h>
 #include <stdexcept>
@@ -13,5 +12,3 @@ public:
 };
 
 }
-
-#endif
