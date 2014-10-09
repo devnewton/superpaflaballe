@@ -111,10 +111,10 @@ namespace superpaflaballe {
     : remaining_ticks_(num_ticks) {
         timer_.stop();
         ned_anim_ = as.animations("ned.json")->first();
-        world_.add_system(1, new hera_system(*this, num_entity));
-        world_.add_system(2, new hades_system());
-        world_.add_system(3, new move_system());
-        world_.add_system(4, new render_system(ga));
+        world_.add_system(1, std::unique_ptr<hera_system>(new hera_system(*this, num_entity)));
+        world_.add_system(2, std::unique_ptr<hades_system>(new hades_system()));
+        world_.add_system(3, std::unique_ptr<move_system>(new move_system()));
+        world_.add_system(4, std::unique_ptr<render_system>(new render_system(ga)));
     }
 
     bourrines_benchmark::~bourrines_benchmark() {

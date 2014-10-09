@@ -5,8 +5,6 @@
 #include "stores/array_of_struct.h"
 #include "stores/struct_of_array.h"
 
-#include <boost/ptr_container/ptr_map.hpp>
-
 namespace bourrines {
 
     template<typename Store>
@@ -14,9 +12,9 @@ namespace bourrines {
     public:
         typedef class world<Store> this_type;
         typedef system<this_type> system_type;
-        
+
         world()
-        : delta_(1000.0f / 60.0f) {            
+        : delta_(1000.0f / 60.0f) {
         }
 
         entity create_entity() {
@@ -48,11 +46,11 @@ namespace bourrines {
                 it.second->changed(e);
             }
         }
-        
+
         void set_delta(float delta) {
             delta_ = delta_;
         }
-        
+
         float delta() const {
             return delta_;
         }
@@ -87,16 +85,16 @@ namespace bourrines {
         bool has(entity e) {
             return store_.has<C>(e);
         }
-        
+
         template< typename C >
         bool has(entity e) const {
             return store_.has<C>(e);
         }
 
         template<typename S>
-        void add_system(int priority, S* s) {
+        void add_system(int priority, std::unique_ptr<S> s) {
             s->set_world(this);
-            systems_.insert(priority, s);
+            systems_.emplace(priority, std::move(s));
         }
 
     private:
@@ -104,7 +102,7 @@ namespace bourrines {
         Store store_;
         active_entity_list active_entities_;
         std::vector<entity> recyclable_entities_;
-        boost::ptr_multimap<int, system_type> systems_;
+        std::multimap<int, std::unique_ptr<system_type>> systems_;
         float delta_;
     };
 
