@@ -7,9 +7,9 @@
 
 namespace superpaflaballe {
 
-    intro::intro(game& ga, assets& ass)
+    intro::intro(game& ga)
     : game_(ga)
-    , play_(std::make_shared<superpaflaballe::nanim::play>(ass.animations("intro/devnewton.json")->first(), superpaflaballe::nanim::loop)) {
+    , play_(std::make_shared<superpaflaballe::nanim::play>(ga.assets().animations("intro/devnewton.json")->first(), superpaflaballe::nanim::once)) {
     }
 
     void intro::tick() {
@@ -20,5 +20,9 @@ namespace superpaflaballe {
         rect.x = (superpaflaballe::logical_screen_width - rect.w) / 2;
         rect.y = (superpaflaballe::logical_screen_height - rect.h) / 2;
         SDL_RenderCopy(game_.renderer(), play_->current_frame().image().get(), &play_->current_frame().rect(), &rect);
+    }
+    
+    bool intro::is_finished() {
+        return play_->is_stopped();
     }
 }
