@@ -107,10 +107,10 @@ namespace superpaflaballe {
         game& game_;
     };
 
-    bourrines_benchmark::bourrines_benchmark(game& ga, assets& as, int num_entity, int num_ticks)
+    bourrines_benchmark::bourrines_benchmark(game& ga, int num_entity, int num_ticks)
     : remaining_ticks_(num_ticks) {
         timer_.stop();
-        ned_anim_ = as.animations("ned.json")->first();
+        ned_anim_ = ga.assets().animations("ned.json")->first();
         world_.add_system(1, std::unique_ptr<hera_system>(new hera_system(*this, num_entity)));
         world_.add_system(2, std::unique_ptr<hades_system>(new hades_system()));
         world_.add_system(3, std::unique_ptr<move_system>(new move_system()));

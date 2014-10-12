@@ -29,7 +29,7 @@ namespace superpaflaballe {
 
     class bourrines_benchmark {
     public:
-        bourrines_benchmark(game& g, assets& a, int num_entity, int num_ticks);
+        bourrines_benchmark(game& g, int num_entity, int num_ticks);
         ~bourrines_benchmark();
         
         void tick();

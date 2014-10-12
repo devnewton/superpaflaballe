@@ -10,10 +10,9 @@
 int main(int, char**) {
     try {
         superpaflaballe::game game;
-        superpaflaballe::assets assets(game);
         superpaflaballe::framerate framerate;
 
-        superpaflaballe::bourrines_benchmark benchmark(game, assets, 10000, 60 * 10);
+        superpaflaballe::bourrines_benchmark benchmark(game, 10000, 60 * 10);
         SDL_Event event;
         for (;;) {
             while (SDL_PollEvent(&event)) {

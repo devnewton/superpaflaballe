@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL.h>
+#include "assets.h"
 
 namespace superpaflaballe {
 
@@ -14,8 +14,11 @@ namespace superpaflaballe {
 
         SDL_Window* window();
         SDL_Renderer* renderer();
+        
+        superpaflaballe::assets& assets();
 
     private:
+        superpaflaballe::assets* assets_;
         SDL_Window* window_;
         SDL_Renderer* renderer_;
     };

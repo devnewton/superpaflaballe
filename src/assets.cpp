@@ -1,4 +1,5 @@
 #include "assets.h"
+#include "game.h"
 #include "sdl_exception.h"
 #include <SDL_image.h>
 #include <boost/property_tree/ptree.hpp>

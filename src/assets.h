@@ -1,9 +1,10 @@
 #pragma once
 
-#include "game.h"
 #include "nanim.h"
 
 namespace superpaflaballe {
+
+    class game;
 
     class assets {
     public:
