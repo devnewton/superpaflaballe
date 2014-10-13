@@ -20,6 +20,8 @@ namespace superpaflaballe {
 
         game& game_;
         std::vector<std::string> pathPrefixes_;
+        std::map<std::string, std::weak_ptr< SDL_Texture > > textures_;
+        std::map<std::string, std::weak_ptr< nanim::collection > > animations_;
 
     };
 

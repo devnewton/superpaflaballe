@@ -9,7 +9,7 @@ namespace superpaflaballe {
 
     intro::intro(game& ga)
     : game_(ga)
-    , play_(std::make_shared<superpaflaballe::nanim::play>(ga.assets().animations("intro/devnewton.json")->first(), superpaflaballe::nanim::once)) {
+    , play_(ga.assets().animations("intro/devnewton.json")->play(superpaflaballe::nanim::once)) {
     }
 
     void intro::tick() {

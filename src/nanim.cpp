@@ -16,7 +16,7 @@ namespace superpaflaballe {
         }
 
         play::play(std::shared_ptr<animation> a, play_mode m)
-        : animation_(a){
+        : animation_(a) {
             start(m);
         }
 
@@ -67,12 +67,20 @@ namespace superpaflaballe {
             return animation_->frames_[current_frame_index_];
         }
 
+        std::shared_ptr<::superpaflaballe::nanim::play> animation::play(play_mode m) {
+            return std::make_shared<::superpaflaballe::nanim::play>(shared_from_this(), m);
+        }
+
         std::shared_ptr<animation> collection::get(const std::string& name) {
             return animations_[name];
         }
 
         std::shared_ptr<animation> collection::first() {
             return animations_.begin()->second;
+        }
+        
+        std::shared_ptr<::superpaflaballe::nanim::play> collection::play(play_mode m) {
+            return first()->play(m);
         }
     }
 }

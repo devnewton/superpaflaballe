@@ -39,7 +39,7 @@ namespace superpaflaballe {
         
     private:
         world world_;
-        std::shared_ptr< nanim::animation > ned_anim_;
+        std::shared_ptr< nanim::collection > ned_anim_;
         boost::timer::auto_cpu_timer timer_;
         int remaining_ticks_;
     };

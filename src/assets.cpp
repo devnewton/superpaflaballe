@@ -25,12 +25,16 @@ namespace superpaflaballe {
     }
 
     std::shared_ptr< SDL_Texture > assets::texture(const std::string& path) {
-
+        auto texture = textures_[path].lock();
+        if (texture) {
+            return texture;
+        }
         boost::filesystem::path fspath(path);
         for (auto& prefix : pathPrefixes_) {
             boost::filesystem::path fsprefix(prefix);
-            auto texture = load_texture((fsprefix / fspath).string());
+            texture = load_texture((fsprefix / fspath).string());
             if (texture) {
+                textures_[path] = texture;
                 return texture;
             }
         }
@@ -42,9 +46,17 @@ namespace superpaflaballe {
     }
 
     std::shared_ptr< nanim::collection > assets::animations(const std::string& path) {
+        auto animations = animations_[path].lock();
+        if(animations) {
+            return animations;
+        }
         for (auto& prefix : pathPrefixes_) {
             try {
-                return load_json_nanim(prefix + path);
+                animations = load_json_nanim(prefix + path);
+                if(animations) {
+                    animations_[path] = animations;
+                    return animations;
+                }                
             } catch (...) {
             }
         }
@@ -53,7 +65,7 @@ namespace superpaflaballe {
 
     std::shared_ptr<nanim::collection> assets::load_json_nanim(const std::string& path) {
         using boost::property_tree::ptree;
-        if(!boost::filesystem::exists(path)) {
+        if (!boost::filesystem::exists(path)) {
             return nullptr;
         }
         ptree pt_nanim;
@@ -67,13 +79,13 @@ namespace superpaflaballe {
                 auto pt_frame = pt_frame_child.second;
                 nanim::frame fram;
                 fram.duration_ = pt_frame.get<long>("duration");
-                anim->total_duration_ +=  fram.duration_;
+                anim->total_duration_ += fram.duration_;
                 fram.end_time_ = anim->total_duration_;
                 float u1 = pt_frame.get<float>("u1");
                 float v1 = pt_frame.get<float>("v1");
                 float u2 = pt_frame.get<float>("u2");
                 float v2 = pt_frame.get<float>("v2");
-                fram.image_ = load_texture( (parent_path / pt_frame.get<std::string>("image")).string() );
+                fram.image_ = load_texture((parent_path / pt_frame.get<std::string>("image")).string());
                 int w, h;
                 SDL_QueryTexture(fram.image_.get(), NULL, NULL, &w, &h);
                 fram.rect_.x = u1 * w;

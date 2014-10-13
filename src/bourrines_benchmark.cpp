@@ -110,7 +110,7 @@ namespace superpaflaballe {
     bourrines_benchmark::bourrines_benchmark(game& ga, int num_entity, int num_ticks)
     : remaining_ticks_(num_ticks) {
         timer_.stop();
-        ned_anim_ = ga.assets().animations("ned.json")->first();
+        ned_anim_ = ga.assets().animations("ned.json");
         world_.add_system(1, std::unique_ptr<hera_system>(new hera_system(*this, num_entity)));
         world_.add_system(2, std::unique_ptr<hades_system>(new hades_system()));
         world_.add_system(3, std::unique_ptr<move_system>(new move_system()));
@@ -131,7 +131,7 @@ namespace superpaflaballe {
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
         dir.dy_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
 
-        world_.add<anim_component>(e).play_ = std::make_shared<superpaflaballe::nanim::play>(ned_anim_, superpaflaballe::nanim::loop);
+        world_.add<anim_component>(e).play_ = ned_anim_->play(superpaflaballe::nanim::loop);
         world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
 
         world_.changed(e);
