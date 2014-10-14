@@ -111,6 +111,12 @@ int main(int, char**) {
             }
             SDL_RenderClear(machine.game_.renderer());
             machine.process_event(event_tick);
+            SDL_Color fg = {255, 255, 255, 0 };
+            auto* text_surface = TTF_RenderText_Blended(machine.game_.assets().font("ProFontWindows.ttf", 21).get(), "plop", fg);
+            auto* text_texture = SDL_CreateTextureFromSurface(machine.game_.renderer(), text_surface);
+            SDL_RenderCopy(machine.game_.renderer(), text_texture, nullptr, nullptr);
+             SDL_FreeSurface(text_surface);
+             SDL_DestroyTexture(text_texture);
             SDL_RenderPresent(machine.game_.renderer());
             machine.framerate_.limit();
         }

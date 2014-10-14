@@ -38,7 +38,7 @@ namespace superpaflaballe {
     SDL_Renderer* game::renderer() {
         return renderer_;
     }
-    
+
     assets& game::assets() {
         return *assets_;
     }

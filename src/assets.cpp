@@ -13,6 +13,9 @@ namespace superpaflaballe {
     : game_(game) {
         pathPrefixes_.push_back("../assets/");
         pathPrefixes_.push_back(PREFIX "/games/superpaflaballe/");
+        if (TTF_Init() != 0) {
+            throw sdl_exception();
+        }
         int flags = IMG_INIT_PNG;
         int initted = IMG_Init(flags);
         if ((initted & flags) != flags) {
@@ -22,7 +25,30 @@ namespace superpaflaballe {
 
     assets::~assets() {
         IMG_Quit();
+        TTF_Quit();
     }
+
+    std::shared_ptr< TTF_Font > assets::font(const std::string& path, int size) {
+        auto key = std::make_pair(path, size);
+        auto font = fonts_[key].lock();
+        if (font) {
+            return font;
+        }
+        boost::filesystem::path fspath(path);
+        for (auto& prefix : pathPrefixes_) {
+            boost::filesystem::path fsprefix(prefix);
+            font = load_font((fsprefix / fspath).string(), size);
+            if (font) {
+                fonts_[key] = font;
+                return font;
+            }
+        }
+        throw std::runtime_error("Cannot load font " + path);
+    }
+    
+     std::shared_ptr< TTF_Font > assets::load_font(const std::string path, int size) {
+         return std::shared_ptr< TTF_Font >(TTF_OpenFont(path.c_str(), size), TTF_CloseFont);
+     }
 
     std::shared_ptr< SDL_Texture > assets::texture(const std::string& path) {
         auto texture = textures_[path].lock();
@@ -47,16 +73,16 @@ namespace superpaflaballe {
 
     std::shared_ptr< nanim::collection > assets::animations(const std::string& path) {
         auto animations = animations_[path].lock();
-        if(animations) {
+        if (animations) {
             return animations;
         }
         for (auto& prefix : pathPrefixes_) {
             try {
                 animations = load_json_nanim(prefix + path);
-                if(animations) {
+                if (animations) {
                     animations_[path] = animations;
                     return animations;
-                }                
+                }
             } catch (...) {
             }
         }
