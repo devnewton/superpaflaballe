@@ -20,8 +20,11 @@ include_directories(${SDL2_INCLUDE_DIR})
 find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
+find_package(SDL2_mixer REQUIRED)
+include_directories(${SDL2_MIXER_INCLUDE_DIR})
+
 find_package(SDL2_ttf REQUIRED)
 include_directories(${SDL2_TTF_INCLUDE_DIR})
 
 add_executable(superpaflaballe src/assets.cpp src/bourrines_benchmark.cpp src/framerate.cpp src/game.cpp src/intro.cpp src/main.cpp src/nanim.cpp src/sdl_exception.cpp)
-target_link_libraries(superpaflaballe ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${Boost_LIBRARIES})
+target_link_libraries(superpaflaballe ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_MIXER_LIBRARY} ${SDL2_TTF_LIBRARY} ${Boost_LIBRARIES})

@@ -16,14 +16,24 @@ namespace superpaflaballe {
         if (TTF_Init() != 0) {
             throw sdl_exception();
         }
-        int flags = IMG_INIT_PNG;
-        int initted = IMG_Init(flags);
-        if ((initted & flags) != flags) {
+        const int img_flags = IMG_INIT_PNG;
+        int img_initted = IMG_Init(img_flags);
+        if ((img_initted & img_flags) != img_flags) {
+            throw sdl_exception();
+        }
+        int mix_flags = MIX_INIT_OGG;
+        int mix_initted = Mix_Init(mix_flags);
+        if ((mix_initted & mix_flags) != mix_flags) {
+            throw sdl_exception();
+        }
+       if( Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT , 2, 1024) != 0 ) {
             throw sdl_exception();
         }
     }
 
     assets::~assets() {
+        Mix_CloseAudio();
+        Mix_Quit();
         IMG_Quit();
         TTF_Quit();
     }
@@ -45,10 +55,31 @@ namespace superpaflaballe {
         }
         throw std::runtime_error("Cannot load font " + path);
     }
-    
-     std::shared_ptr< TTF_Font > assets::load_font(const std::string path, int size) {
-         return std::shared_ptr< TTF_Font >(TTF_OpenFont(path.c_str(), size), TTF_CloseFont);
-     }
+
+    std::shared_ptr< TTF_Font > assets::load_font(const std::string path, int size) {
+        return std::shared_ptr< TTF_Font >(TTF_OpenFont(path.c_str(), size), TTF_CloseFont);
+    }
+
+    std::shared_ptr< Mix_Music > assets::music(const std::string& path) {
+        auto music = musics_[path].lock();
+        if (music) {
+            return music;
+        }
+        boost::filesystem::path fspath(path);
+        for (auto& prefix : pathPrefixes_) {
+            boost::filesystem::path fsprefix(prefix);
+            music = load_music((fsprefix / fspath).string());
+            if (music) {
+                musics_[path] = music;
+                return music;
+            }
+        }
+        throw std::runtime_error("Cannot load music " + path);
+    }
+
+     std::shared_ptr< Mix_Music > assets::load_music(const std::string& path) {
+        return std::shared_ptr< Mix_Music >(Mix_LoadMUS(path.c_str()), Mix_FreeMusic);
+    }
 
     std::shared_ptr< SDL_Texture > assets::texture(const std::string& path) {
         auto texture = textures_[path].lock();
