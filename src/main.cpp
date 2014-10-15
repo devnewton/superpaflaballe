@@ -11,7 +11,7 @@
 namespace superpaflaballe {
     namespace statechart {
 
-        struct event_sdl : boost::statechart::event< event_sdl >  {
+        struct event_sdl : boost::statechart::event< event_sdl > {
             SDL_Event e_;
         };
 
@@ -27,9 +27,10 @@ namespace superpaflaballe {
             game game_;
             framerate framerate_;
         };
-        
-         struct state_running : boost::statechart::simple_state< state_running, machine, state_intro > {
+
+        struct state_running : boost::statechart::simple_state< state_running, machine, state_intro > {
             typedef boost::statechart::custom_reaction< event_sdl > reactions;
+
             boost::statechart::result react(const event_sdl& event) {
                 if (event.e_.type == SDL_QUIT) {
                     return terminate();
@@ -38,7 +39,6 @@ namespace superpaflaballe {
                 }
             }
         };
-
 
         struct state_intro : boost::statechart::state< state_intro, state_running > {
             typedef boost::mpl::list<
@@ -105,18 +105,15 @@ int main(int, char**) {
 
         superpaflaballe::statechart::event_sdl event_sdl;
         superpaflaballe::statechart::event_tick event_tick;
+        auto font = machine.game_.assets().font("ProFontWindows.ttf", 12);
+        auto text_texture = machine.game_.create_text_texture(font, "plop");
         while (!machine.terminated()) {
             while (SDL_PollEvent(&event_sdl.e_)) {
                 machine.process_event(event_sdl);
             }
             SDL_RenderClear(machine.game_.renderer());
             machine.process_event(event_tick);
-            SDL_Color fg = {255, 255, 255, 0 };
-            auto* text_surface = TTF_RenderText_Blended(machine.game_.assets().font("ProFontWindows.ttf", 21).get(), "plop", fg);
-            auto* text_texture = SDL_CreateTextureFromSurface(machine.game_.renderer(), text_surface);
-            SDL_RenderCopy(machine.game_.renderer(), text_texture, nullptr, nullptr);
-             SDL_FreeSurface(text_surface);
-             SDL_DestroyTexture(text_texture);
+            SDL_RenderCopy(machine.game_.renderer(), text_texture.get(), nullptr, nullptr);
             SDL_RenderPresent(machine.game_.renderer());
             machine.framerate_.limit();
         }
