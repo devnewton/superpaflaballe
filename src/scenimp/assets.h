@@ -4,7 +4,7 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
-namespace superpaflaballe {
+namespace scenimp {
 
     class game;
 

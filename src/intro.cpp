@@ -7,9 +7,9 @@
 
 namespace superpaflaballe {
 
-    intro::intro(game& ga)
+    intro::intro(scenimp::game& ga)
     : game_(ga)
-    , play_(ga.assets().animations("intro/devnewton.json")->play(superpaflaballe::nanim::once))
+    , play_(ga.assets().animations("intro/devnewton.json")->play(scenimp::nanim::once))
     , music_(ga.assets().music("intro/devnewton.ogg")) {
         Mix_PlayMusic(music_.get(), 1);
     }
@@ -23,8 +23,8 @@ namespace superpaflaballe {
         SDL_Rect rect;
         rect.w = 512;
         rect.h = 116;
-        rect.x = (superpaflaballe::logical_screen_width - rect.w) / 2;
-        rect.y = (superpaflaballe::logical_screen_height - rect.h) / 2;
+        rect.x = (scenimp::logical_screen_width - rect.w) / 2;
+        rect.y = (scenimp::logical_screen_height - rect.h) / 2;
         SDL_RenderCopy(game_.renderer(), play_->current_frame().image().get(), &play_->current_frame().rect(), &rect);
     }
 

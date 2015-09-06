@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 
-namespace superpaflaballe {
+namespace scenimp {
     class assets;
 
     namespace nanim {
@@ -25,7 +25,7 @@ namespace superpaflaballe {
             SDL_Rect rect_;
             long end_time_;
 
-            friend class ::superpaflaballe::assets;
+            friend class ::scenimp::assets;
             friend class play;
         };
 
@@ -59,26 +59,26 @@ namespace superpaflaballe {
         class animation : public std::enable_shared_from_this<animation> {
         public:
 
-            std::shared_ptr<::superpaflaballe::nanim::play> play(play_mode m);
+            std::shared_ptr<::scenimp::nanim::play> play(play_mode m);
 
         private:
             std::vector<frame> frames_;
             long total_duration_;
 
-            friend class ::superpaflaballe::assets;
-            friend class ::superpaflaballe::nanim::play;
+            friend class ::scenimp::assets;
+            friend class ::scenimp::nanim::play;
         };
 
         class collection {
         public:
             std::shared_ptr<animation> get(const std::string& name);
             std::shared_ptr<animation> first();            
-            std::shared_ptr<::superpaflaballe::nanim::play> play(play_mode m);
+            std::shared_ptr<::scenimp::nanim::play> play(play_mode m);
 
         private:
             std::map< std::string, std::shared_ptr<animation> > animations_;
 
-            friend class ::superpaflaballe::assets;
+            friend class ::scenimp::assets;
         };
     }
 

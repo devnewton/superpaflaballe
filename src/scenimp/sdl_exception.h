@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include <stdexcept>
 
-namespace superpaflaballe {
+namespace scenimp {
 
 class sdl_exception : public std::runtime_error
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "game.h"
-#include "nanim.h"
-#include "assets.h"
+#include "scenimp/game.h"
+#include "scenimp/nanim.h"
+#include "scenimp/assets.h"
 #include "bourrines/bourrines.h"
 
 #include <boost/timer/timer.hpp>
@@ -22,14 +22,14 @@ namespace superpaflaballe {
     };
 
     struct anim_component {
-        std::shared_ptr< nanim::play > play_;
+        std::shared_ptr< scenimp::nanim::play > play_;
     };
 
     typedef bourrines::default_world<pos_component, dir_component, life_component, anim_component> world;
 
     class bourrines_benchmark {
     public:
-        bourrines_benchmark(game& g, int num_entity, int num_ticks);
+        bourrines_benchmark(scenimp::game& g, int num_entity, int num_ticks);
         ~bourrines_benchmark();
         
         void tick();
@@ -39,7 +39,7 @@ namespace superpaflaballe {
         
     private:
         world world_;
-        std::shared_ptr< nanim::collection > ned_anim_;
+        std::shared_ptr< scenimp::nanim::collection > ned_anim_;
         boost::timer::auto_cpu_timer timer_;
         int remaining_ticks_;
     };

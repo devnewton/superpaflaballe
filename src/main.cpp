@@ -1,5 +1,5 @@
-#include "assets.h"
-#include "game.h"
+#include "scenimp/assets.h"
+#include "scenimp/game.h"
 #include "framerate.h"
 #include "intro.h"
 #include "bourrines_benchmark.h"
@@ -24,7 +24,7 @@ namespace superpaflaballe {
         struct state_outro;
 
         struct machine : boost::statechart::state_machine< machine, state_running > {
-            game game_;
+            scenimp::game game_;
             framerate framerate_;
         };
 

@@ -7,7 +7,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 
-namespace superpaflaballe {
+namespace scenimp {
 
     assets::assets(game& game)
     : game_(game) {

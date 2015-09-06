@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 
-namespace superpaflaballe {
+namespace scenimp {
 
     game::game() {
         if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
@@ -21,7 +21,7 @@ namespace superpaflaballe {
             throw sdl_exception();
         }
         SDL_RenderSetLogicalSize(renderer_, logical_screen_width, logical_screen_height);
-        assets_ = new superpaflaballe::assets(*this);
+        assets_ = new scenimp::assets(*this);
     }
 
     game::~game() {
