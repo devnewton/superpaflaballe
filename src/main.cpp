@@ -1,12 +1,12 @@
 #include "scenimp/assets.h"
 #include "scenimp/game.h"
-#include "framerate.h"
 #include "intro.h"
 #include "bourrines_benchmark.h"
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/state.hpp>
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/custom_reaction.hpp>
+#include <SDL2_framerate.h>
 
 namespace superpaflaballe {
     namespace statechart {
@@ -25,7 +25,6 @@ namespace superpaflaballe {
 
         struct machine : boost::statechart::state_machine< machine, state_running > {
             scenimp::game game_;
-            framerate framerate_;
         };
 
         struct state_running : boost::statechart::simple_state< state_running, machine, state_intro > {
@@ -107,6 +106,10 @@ int main(int, char**) {
         superpaflaballe::statechart::event_tick event_tick;
         auto font = machine.game_.assets().font("ProFontWindows.ttf", 12);
         auto text_texture = machine.game_.create_text_texture(font, "plop");
+        
+        FPSmanager fps;
+        SDL_initFramerate(&fps);
+        SDL_setFramerate(&fps, 60);
         while (!machine.terminated()) {
             while (SDL_PollEvent(&event_sdl.e_)) {
                 machine.process_event(event_sdl);
@@ -115,7 +118,7 @@ int main(int, char**) {
             machine.process_event(event_tick);
             SDL_RenderCopy(machine.game_.renderer(), text_texture.get(), nullptr, nullptr);
             SDL_RenderPresent(machine.game_.renderer());
-            machine.framerate_.limit();
+            SDL_framerateDelay(&fps);
         }
     } catch (const std::exception& e) {
         std::cerr << "Error " << e.what() << std::endl;

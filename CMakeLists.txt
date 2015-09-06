@@ -17,6 +17,9 @@ include_directories( ${Boost_INCLUDE_DIRS} )
 find_package(SDL2 REQUIRED)
 include_directories(${SDL2_INCLUDE_DIR})
 
+find_package(SDL2_gfx REQUIRED)
+include_directories(${SDL2_GFX_INCLUDE_DIR})
+
 find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_IMAGE_INCLUDE_DIR})
 
@@ -34,7 +37,6 @@ add_executable(superpaflaballe
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp
  src/scenimp/sdl_exception.cpp
- src/framerate.cpp
  src/intro.cpp
  src/main.cpp)
-target_link_libraries(superpaflaballe ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_MIXER_LIBRARY} ${SDL2_TTF_LIBRARY} ${Boost_LIBRARIES})
+target_link_libraries(superpaflaballe ${SDL2_LIBRARY} ${SDL2_GFX_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_MIXER_LIBRARY} ${SDL2_TTF_LIBRARY} ${Boost_LIBRARIES})
