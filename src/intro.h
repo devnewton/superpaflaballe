@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scenimp/game.h"
+#include "scenimp/screen.h"
 #include "scenimp/nanim.h"
 #include "scenimp/assets.h"
 
@@ -8,12 +8,12 @@ namespace superpaflaballe {
 
     class intro {
     public:
-        intro(scenimp::game& g);
+        intro(scenimp::screen& g);
         ~intro();
         void tick();
         bool is_finished();
     private:
-        scenimp::game& game_;
+        scenimp::screen& screen_;
         std::shared_ptr<scenimp::nanim::play> play_;
         std::shared_ptr<Mix_Music> music_;
     };

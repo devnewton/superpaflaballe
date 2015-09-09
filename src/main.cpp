@@ -1,5 +1,5 @@
 #include "scenimp/assets.h"
-#include "scenimp/game.h"
+#include "scenimp/screen.h"
 #include "intro.h"
 #include "bourrines_benchmark.h"
 #include <boost/statechart/state_machine.hpp>
@@ -24,7 +24,7 @@ namespace superpaflaballe {
         struct state_outro;
 
         struct machine : boost::statechart::state_machine< machine, state_running > {
-            scenimp::game game_;
+            scenimp::screen screen_;
         };
 
         struct state_running : boost::statechart::simple_state< state_running, machine, state_intro > {
@@ -47,7 +47,7 @@ namespace superpaflaballe {
 
             state_intro(my_context ctx)
             : boost::statechart::state< state_intro, state_running >(ctx)
-            , intro_(this->outermost_context().game_) {
+            , intro_(this->outermost_context().screen_) {
             }
 
             boost::statechart::result react(const event_tick&) {
@@ -74,7 +74,7 @@ namespace superpaflaballe {
 
             state_benchmark(my_context ctx)
             : boost::statechart::state< state_benchmark, state_running >(ctx)
-            , benchmark_(this->outermost_context().game_, 10000, 60 * 10) {
+            , benchmark_(this->outermost_context().screen_, 10000, 60 * 10) {
             }
 
             boost::statechart::result react(const event_tick&) {
@@ -104,8 +104,8 @@ int main(int, char**) {
 
         superpaflaballe::statechart::event_sdl event_sdl;
         superpaflaballe::statechart::event_tick event_tick;
-        auto font = machine.game_.assets().font("ProFontWindows.ttf", 12);
-        auto text_texture = machine.game_.create_text_texture(font, "plop");
+        auto font = machine.screen_.assets().font("ProFontWindows.ttf", 12);
+        auto text_texture = machine.screen_.create_text_texture(font, "plop");
         
         FPSmanager fps;
         SDL_initFramerate(&fps);
@@ -114,10 +114,10 @@ int main(int, char**) {
             while (SDL_PollEvent(&event_sdl.e_)) {
                 machine.process_event(event_sdl);
             }
-            SDL_RenderClear(machine.game_.renderer());
+            SDL_RenderClear(machine.screen_.renderer());
             machine.process_event(event_tick);
-            SDL_RenderCopy(machine.game_.renderer(), text_texture.get(), nullptr, nullptr);
-            SDL_RenderPresent(machine.game_.renderer());
+            SDL_RenderCopy(machine.screen_.renderer(), text_texture.get(), nullptr, nullptr);
+            SDL_RenderPresent(machine.screen_.renderer());
             SDL_framerateDelay(&fps);
         }
     } catch (const std::exception& e) {

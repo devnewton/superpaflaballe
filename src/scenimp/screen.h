@@ -4,15 +4,14 @@
 
 namespace scenimp {
 
-    const int logical_screen_width = 1920;
-    const int logical_screen_height = 1080;
-
-    class game {
+    class screen {
     public:
-        game();
-        ~game();
+        screen();
+        ~screen();
 
-        SDL_Window* window();
+        int logical_screen_width() const;
+        int logical_screen_height() const;
+
         SDL_Renderer* renderer();
         scenimp::assets& assets();
 

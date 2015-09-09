@@ -59,7 +59,7 @@ namespace scenimp {
         class animation : public std::enable_shared_from_this<animation> {
         public:
 
-            std::shared_ptr<::scenimp::nanim::play> play(play_mode m);
+            std::shared_ptr< ::scenimp::nanim::play > play(play_mode m);
 
         private:
             std::vector<frame> frames_;
@@ -73,7 +73,7 @@ namespace scenimp {
         public:
             std::shared_ptr<animation> get(const std::string& name);
             std::shared_ptr<animation> first();            
-            std::shared_ptr<::scenimp::nanim::play> play(play_mode m);
+            std::shared_ptr< ::scenimp::nanim::play > play(play_mode m);
 
         private:
             std::map< std::string, std::shared_ptr<animation> > animations_;

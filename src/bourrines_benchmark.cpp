@@ -52,6 +52,10 @@ namespace superpaflaballe {
     class move_system : public bourrines::selective_processing_system<world> {
     public:
 
+        move_system(scenimp::screen& s)
+        : screen_(s) {
+        }
+
         virtual bool accept(bourrines::entity e) override {
             return has<pos_component>(e) && has<dir_component>(e);
         }
@@ -71,22 +75,25 @@ namespace superpaflaballe {
                 dir.dy_ = -dir.dy_;
             }
 
-            if (pos.x_ >= scenimp::logical_screen_width) {
+            if (pos.x_ >= screen_.logical_screen_width()) {
                 dir.dx_ = -dir.dx_;
             }
 
-            if (pos.y_ >= scenimp::logical_screen_height) {
+            if (pos.y_ >= screen_.logical_screen_height()) {
                 dir.dy_ = -dir.dy_;
             }
         }
+
+    private:
+        scenimp::screen& screen_;
 
     };
 
     class render_system : public bourrines::selective_processing_system<world> {
     public:
 
-        render_system(scenimp::game& g)
-        : game_(g) {
+        render_system(scenimp::screen& s)
+        : screen_(s) {
         }
 
         virtual bool accept(bourrines::entity e) override {
@@ -101,20 +108,20 @@ namespace superpaflaballe {
             rect.h = 32;
             rect.x = pos.x_;
             rect.y = pos.y_;
-            SDL_RenderCopy(game_.renderer(), anim.play_->current_frame().image().get(), &anim.play_->current_frame().rect(), &rect);
+            SDL_RenderCopy(screen_.renderer(), anim.play_->current_frame().image().get(), &anim.play_->current_frame().rect(), &rect);
         }
     private:
-        scenimp::game& game_;
+        scenimp::screen& screen_;
     };
 
-    bourrines_benchmark::bourrines_benchmark(scenimp::game& ga, int num_entity, int num_ticks)
-    : remaining_ticks_(num_ticks) {
+    bourrines_benchmark::bourrines_benchmark(scenimp::screen& screen, int num_entity, int num_ticks)
+    : screen_(screen), remaining_ticks_(num_ticks) {
         timer_.stop();
-        ned_anim_ = ga.assets().animations("ned.json");
+        ned_anim_ = screen.assets().animations("ned.json");
         world_.add_system(1, std::unique_ptr<hera_system>(new hera_system(*this, num_entity)));
         world_.add_system(2, std::unique_ptr<hades_system>(new hades_system()));
-        world_.add_system(3, std::unique_ptr<move_system>(new move_system()));
-        world_.add_system(4, std::unique_ptr<render_system>(new render_system(ga)));
+        world_.add_system(3, std::unique_ptr<move_system>(new move_system(screen)));
+        world_.add_system(4, std::unique_ptr<render_system>(new render_system(screen)));
     }
 
     bourrines_benchmark::~bourrines_benchmark() {
@@ -124,8 +131,8 @@ namespace superpaflaballe {
     void bourrines_benchmark::create_ned() {
         bourrines::entity e = world_.create_entity();
         pos_component& pos = world_.add<pos_component>(e);
-        pos.x_ = std::rand() % scenimp::logical_screen_width;
-        pos.y_ = std::rand() % scenimp::logical_screen_height;
+        pos.x_ = std::rand() % screen_.logical_screen_width();
+        pos.y_ = std::rand() % screen_.logical_screen_height();
 
         dir_component& dir = world_.add<dir_component>(e);
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);

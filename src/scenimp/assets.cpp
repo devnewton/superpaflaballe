@@ -1,5 +1,5 @@
 #include "assets.h"
-#include "game.h"
+#include "screen.h"
 #include "sdl_exception.h"
 #include <SDL_image.h>
 #include <boost/property_tree/ptree.hpp>
@@ -9,8 +9,8 @@
 
 namespace scenimp {
 
-    assets::assets(game& game)
-    : game_(game) {
+    assets::assets(screen& screen)
+    : screen_(screen) {
         pathPrefixes_.push_back("../assets/");
         pathPrefixes_.push_back(PREFIX "/games/superpaflaballe/");
         if (TTF_Init() != 0) {
@@ -99,7 +99,7 @@ namespace scenimp {
     }
 
     std::shared_ptr< SDL_Texture > assets::load_texture(const std::string path) {
-        return std::shared_ptr< SDL_Texture >(IMG_LoadTexture(game_.renderer(), path.c_str()), SDL_DestroyTexture);
+        return std::shared_ptr< SDL_Texture >(IMG_LoadTexture(screen_.renderer(), path.c_str()), SDL_DestroyTexture);
     }
 
     std::shared_ptr< nanim::collection > assets::animations(const std::string& path) {

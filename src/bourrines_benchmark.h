@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scenimp/game.h"
+#include "scenimp/screen.h"
 #include "scenimp/nanim.h"
 #include "scenimp/assets.h"
 #include "bourrines/bourrines.h"
@@ -29,7 +29,7 @@ namespace superpaflaballe {
 
     class bourrines_benchmark {
     public:
-        bourrines_benchmark(scenimp::game& g, int num_entity, int num_ticks);
+        bourrines_benchmark(scenimp::screen& g, int num_entity, int num_ticks);
         ~bourrines_benchmark();
         
         void tick();
@@ -39,6 +39,7 @@ namespace superpaflaballe {
         
     private:
         world world_;
+        scenimp::screen& screen_;
         std::shared_ptr< scenimp::nanim::collection > ned_anim_;
         boost::timer::auto_cpu_timer timer_;
         int remaining_ticks_;
