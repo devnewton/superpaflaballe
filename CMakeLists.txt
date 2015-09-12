@@ -32,10 +32,13 @@ include_directories(${SDL2_TTF_INCLUDE_DIR})
 add_executable(superpaflaballe
  src/bourrines_benchmark.cpp
  src/scenimp/assets.cpp
+ src/scenimp/scene.cpp
  src/scenimp/screen.cpp
  src/scenimp/group.cpp
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp
+ src/scenimp/rendering.cpp
+ src/scenimp/transform.cpp
  src/scenimp/sdl_exception.cpp
  src/intro.cpp
  src/main.cpp)

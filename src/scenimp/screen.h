@@ -7,6 +7,7 @@ namespace scenimp {
     class screen {
     public:
         screen();
+        screen(const screen&) = delete;
         ~screen();
 
         int logical_screen_width() const;

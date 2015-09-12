@@ -3,20 +3,24 @@
 #include "node.h"
 
 namespace scenimp {
+    
+    class scene;
+    class rendering;
 
     class group : public node {
     public:
         group();
-        group(const group& orig) = delete;
+        group(const group&) = delete;
         virtual ~group();
 
-        void attach(std::shared_ptr< node > node);
-        void detach(std::shared_ptr< node > node);
+        virtual void render(rendering& r);
 
         const node_list& children() const;
 
     private:
         node_list children_;
+        
+        friend class scene;
     };
 
 }

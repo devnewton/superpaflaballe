@@ -1,27 +1,33 @@
 #pragma once
 
-#include <memory>
+#include "transform.h"
 #include <boost/container/flat_set.hpp>
 
 namespace scenimp {
-    
-    class group;
 
-    class node: public std::enable_shared_from_this<node> {
+    class group;
+    class scene;
+    class rendering;
+
+    class node {
     public:
         node();
-        node(const node& orig) = delete;
+        node(const node&) = delete;
         virtual ~node();
-        
-        void detach();
+
+        virtual void render(rendering& r) = 0;
+
+        transform& local_transform();
+        const transform& local_transform() const;
 
     private:
-        std::weak_ptr<group> parent_;
-        
-        friend class group;
+        class transform local_transform_;
+        group* parent_;
+
+        friend class scene;
     };
 
-    typedef boost::container::flat_set< std::shared_ptr<node> > node_list;
+    typedef boost::container::flat_set<node* > node_list;
 
 }
 
