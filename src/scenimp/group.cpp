@@ -14,14 +14,9 @@ namespace scenimp {
     }
 
     void group::do_render(rendering& r) {
-        for (auto& c : children_) {
-            c->render(r);
+        for (auto& c : children_.get<container::z_index>()) {
+            c.node->render(r);
         }
-    }
-    
-    void group::set_z(node* child, int z) {
-        auto it = children_.find(child);
-        children_.modify(it, [z](node* n) { n->z_ = z; });
     }
 
 }

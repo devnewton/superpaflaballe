@@ -5,25 +5,40 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/hashed_index.hpp>
 #include <boost/multi_index/identity.hpp>
-#include <boost/multi_index/mem_fun.hpp>
+#include <boost/multi_index/member.hpp>
 
 namespace scenimp {
 
     namespace container {
         using namespace boost::multi_index;
-        
-        struct z_index {};
+
+        struct node_in_group {
+            node_in_group(class node* n, int z)
+            : node(n)
+            , z(z) {
+            }
+
+            class node* node;
+            int z;
+        };
+
+        struct node_index {
+        };
+
+        struct z_index {
+        };
 
         typedef multi_index_container<
-        node*,
+        node_in_group,
         indexed_by<
-            hashed_unique< identity< node* > >,
-            ordered_non_unique< tag< z_index >, const_mem_fun<node, int, &node::z > >
+        hashed_unique< tag<node_index>, member< node_in_group, node*, &node_in_group::node > >,
+        ordered_non_unique< tag< z_index >, member< node_in_group, int, &node_in_group::z > >
         >
         > node_set;
     }
-    
+
     using container::node_set;
+    using container::node_in_group;
 
     class scene;
     class rendering;
@@ -35,7 +50,6 @@ namespace scenimp {
         virtual ~group();
 
         const node_set& children() const;
-        void set_z(node* child, int z);
 
     protected:
         virtual void do_render(rendering& r);

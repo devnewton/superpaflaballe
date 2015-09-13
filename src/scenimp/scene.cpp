@@ -12,23 +12,23 @@ namespace scenimp {
     scene::~scene() {
     }
 
-    group& scene::new_group(group* parent) {
+    group& scene::new_group(group* parent, int z) {
         group* s = group_pool_.malloc();
-        attach(s, parent);
+        attach(s, parent,z);
         return *s;
     }
 
-    sprite& scene::new_sprite(group* parent) {
+    sprite& scene::new_sprite(group* parent, int z) {
         sprite* s = sprite_pool_.malloc();
-        attach(s, parent);
+        attach(s, parent, z);
         return *s;
     }
 
-    void scene::attach(node* child, group* parent) {
+    void scene::attach(node* child, group* parent, int z) {
         if (nullptr == parent) {
             parent = root_;
         }
-        parent->children_.insert(child);
+        parent->children_.insert(node_in_group(child, z));
         child->parent_ = parent;
     }
 

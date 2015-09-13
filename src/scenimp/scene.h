@@ -13,8 +13,8 @@ namespace scenimp {
         scene(const scene&) = delete;
         ~scene();
         
-        group& new_group(group* parent = nullptr);
-        sprite& new_sprite(group* parent = nullptr);
+        group& new_group(group* parent = nullptr, int z=0);
+        sprite& new_sprite(group* parent = nullptr, int z=0);
         
         void delete_sprite(sprite* s);
         void delete_group(group* g);
@@ -22,7 +22,7 @@ namespace scenimp {
         void render();
 
     private:
-        void attach(node* child, group* parent);
+        void attach(node* child, group* parent, int z);
         void detach(node* child);
         boost::object_pool<group> group_pool_;
         boost::object_pool<sprite> sprite_pool_;
