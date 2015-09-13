@@ -3,7 +3,8 @@
 
 namespace scenimp {
 
-    scene::scene() {
+    scene::scene(SDL_Renderer* r)
+    : renderer_(r) {
         root_ = &new_group();
 
     }
@@ -44,9 +45,9 @@ namespace scenimp {
     void scene::detach(node* child) {
         child->parent_->children_.erase(child);
     }
-    
+
     void scene::render() {
-        rendering r;
+        rendering r(renderer_);
         root_->render(r);
     }
 

@@ -3,13 +3,13 @@
 #include "group.h"
 #include "sprite.h"
 #include <boost/pool/object_pool.hpp>
-
+#include <SDL.h>
 
 namespace scenimp {
 
     class scene {
     public:
-        scene();
+        scene(SDL_Renderer* r);
         scene(const scene&) = delete;
         ~scene();
         
@@ -27,6 +27,7 @@ namespace scenimp {
         boost::object_pool<group> group_pool_;
         boost::object_pool<sprite> sprite_pool_;
         group* root_;
+        SDL_Renderer* renderer_;
     };
 
 }

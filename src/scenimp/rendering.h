@@ -1,22 +1,26 @@
 #pragma once
 
-#include "transform.h"
-#include <stack>
+#include "geometry.h"
+#include <SDL.h>
 
 namespace scenimp {
+    class node;
 
     class rendering {
     public:
-        rendering();
+        rendering(SDL_Renderer* r);
         rendering(const rendering&) = delete;
         ~rendering();
 
-        void push_transform(const transform& t);
-        const transform& current_transform() const;
-        void pop_transform();
+        void push_pos(const node& n);
+        const point& current_pos() const;
+        void pop_pos(const node& n);
+        
+        SDL_Renderer* renderer();
 
     private:
-        std::stack<transform> transform_stack_;
+        point pos_;
+        SDL_Renderer* renderer_;
     };
 
 }

@@ -9,8 +9,8 @@
 
 namespace scenimp {
 
-    assets::assets(screen& screen)
-    : screen_(screen) {
+    assets::assets(SDL_Renderer* r)
+    : renderer_(r) {
         pathPrefixes_.push_back("../assets/");
         pathPrefixes_.push_back(PREFIX "/games/superpaflaballe/");
         if (TTF_Init() != 0) {
@@ -99,7 +99,7 @@ namespace scenimp {
     }
 
     std::shared_ptr< SDL_Texture > assets::load_texture(const std::string path) {
-        return std::shared_ptr< SDL_Texture >(IMG_LoadTexture(screen_.renderer(), path.c_str()), SDL_DestroyTexture);
+        return std::shared_ptr< SDL_Texture >(IMG_LoadTexture(renderer_, path.c_str()), SDL_DestroyTexture);
     }
 
     std::shared_ptr< nanim::collection > assets::animations(const std::string& path) {

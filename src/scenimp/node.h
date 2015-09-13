@@ -1,6 +1,6 @@
 #pragma once
 
-#include "transform.h"
+#include "geometry.h"
 #include <boost/container/flat_set.hpp>
 
 namespace scenimp {
@@ -15,13 +15,16 @@ namespace scenimp {
         node(const node&) = delete;
         virtual ~node();
 
-        virtual void render(rendering& r) = 0;
+        void render(rendering& r);
 
-        transform& local_transform();
-        const transform& local_transform() const;
+        const point& pos() const;
+        point& pos();
+
+    protected:
+        virtual void do_render(rendering& r) = 0;
 
     private:
-        class transform local_transform_;
+        point pos_;
         group* parent_;
 
         friend class scene;

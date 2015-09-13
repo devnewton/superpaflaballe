@@ -2,22 +2,60 @@
 
 namespace scenimp {
 
-    sprite::sprite() {
+    sprite::sprite()
+    : angle_(0.0)
+    , flip_(SDL_FLIP_NONE)
+    , width_(32)
+    , height_(32){
     }
 
     sprite::~sprite() {
     }
 
     void sprite::render(rendering& r) {
-        //TODO
+        SDL_Rect rect_ = {x : -width_/2, y : -height_/2, w: width_, h: height_};
+
+        SDL_RenderCopyEx(r.renderer(), play_->current_frame().image().get(), &play_->current_frame().rect(), &rect_, angle_, NULL, flip_);
     }
 
     std::shared_ptr< nanim::play > sprite::play() {
         return play_;
     }
 
-    void set_play(std::shared_ptr< nanim::play > play) {
+    void sprite::set_play(std::shared_ptr< nanim::play > play) {
         play_ = play;
+    }
+
+    SDL_RendererFlip sprite::flip() const {
+        return flip_;
+    }
+
+    void sprite::set_flip(SDL_RendererFlip flip) {
+        flip_ = flip;
+    }
+
+    double sprite::angle()const {
+        return angle_;
+    }
+
+    void sprite::set_angle(double a) {
+        angle_ = a;
+    }
+
+    int sprite::width() const {
+        return width_;
+    }
+
+    void sprite::set_width(int w) {
+        width_ = w;
+    }
+
+    int sprite::height() const {
+        return height_;
+    }
+
+    void sprite::set_height(int h) {
+        height_ = h;
     }
 
 }

@@ -6,11 +6,9 @@
 
 namespace scenimp {
 
-    class screen;
-
     class assets {
     public:
-        assets(screen& s);
+        assets(SDL_Renderer* r);
         ~assets();
 
         std::shared_ptr< nanim::collection > animations(const std::string& path);
@@ -25,12 +23,12 @@ namespace scenimp {
         std::shared_ptr< Mix_Music > load_music(const std::string& path);
         std::shared_ptr< SDL_Texture > load_texture(const std::string path);
 
-        screen& screen_;
         std::vector<std::string> pathPrefixes_;
         std::map<std::string, std::weak_ptr< nanim::collection > > animations_;
         std::map<std::pair<std::string, int/*font size*/>, std::weak_ptr< TTF_Font > > fonts_;
         std::map<std::string, std::weak_ptr< SDL_Texture > > textures_;
         std::map<std::string, std::weak_ptr< Mix_Music > > musics_;
+        SDL_Renderer* renderer_;
     };
 
 }

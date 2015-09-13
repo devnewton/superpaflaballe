@@ -1,5 +1,6 @@
 #include "node.h"
 #include "group.h"
+#include "rendering.h"
 
 namespace scenimp {
 
@@ -10,11 +11,17 @@ namespace scenimp {
     node::~node() {
     }
 
-    transform& node::local_transform() {
-        return local_transform_;
+    const point& node::pos() const {
+        return pos_;
     }
 
-    const transform& node::local_transform() const {
-        return local_transform_;
+    point& node::pos() {
+        return pos_;
+    }
+
+    void node::render(rendering& r) {
+        r.push_pos(*this);
+        do_render(r);
+        r.pop_pos(*this);
     }
 }

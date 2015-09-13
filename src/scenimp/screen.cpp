@@ -21,7 +21,7 @@ namespace scenimp {
             throw sdl_exception();
         }
         SDL_RenderSetLogicalSize(renderer_, 1920, 1080);
-        assets_ = new scenimp::assets(*this);
+        assets_ = new scenimp::assets(renderer_);
     }
 
     screen::~screen() {

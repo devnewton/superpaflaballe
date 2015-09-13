@@ -38,7 +38,7 @@ add_executable(superpaflaballe
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp
  src/scenimp/rendering.cpp
- src/scenimp/transform.cpp
+ src/scenimp/geometry.cpp
  src/scenimp/sdl_exception.cpp
  src/intro.cpp
  src/main.cpp)

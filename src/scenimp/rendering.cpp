@@ -1,22 +1,34 @@
 #include <stack>
 
 #include "rendering.h"
+#include "node.h"
 
 namespace scenimp {
 
-    rendering::rendering() {
+    rendering::rendering(SDL_Renderer* r)
+    : renderer_(r) {
     }
 
     rendering::~rendering() {
     }
 
-    void rendering::push_transform(const transform& t) {
-        transform_stack_.push(t);
+    SDL_Renderer* rendering::renderer() {
+        return renderer_;
     }
-    const transform& rendering::current_transform() const {
-        return transform_stack_.top();
+
+    void rendering::push_pos(const node& n) {
+        const point& node_pos = n.pos();
+        pos_.x(pos_.x() + node_pos.x());
+        pos_.y(pos_.y() + node_pos.y());
     }
-    void rendering::pop_transform() {
-        transform_stack_.pop();
+
+    const point& rendering::current_pos() const {
+        return pos_;
+    }
+
+    void rendering::pop_pos(const node& n) {
+        const point& node_pos = n.pos();
+        pos_.x(pos_.x() - node_pos.x());
+        pos_.y(pos_.y() - node_pos.y());
     }
 }
