@@ -5,7 +5,8 @@
 namespace scenimp {
 
     node::node()
-    : parent_(nullptr) {
+    : parent_(nullptr),
+    z_(0) {
     }
 
     node::~node() {
@@ -23,5 +24,9 @@ namespace scenimp {
         r.push_pos(*this);
         do_render(r);
         r.pop_pos(*this);
+    }
+
+    int node::z() const {
+        return z_;
     }
 }

@@ -9,7 +9,7 @@ namespace scenimp {
     group::~group() {
     }
 
-    const node_list& group::children() const {
+    const node_set& group::children() const {
         return children_;
     }
 
@@ -17,6 +17,11 @@ namespace scenimp {
         for (auto& c : children_) {
             c->render(r);
         }
+    }
+    
+    void group::set_z(node* child, int z) {
+        auto it = children_.find(child);
+        children_.modify(it, [z](node* n) { n->z_ = z; });
     }
 
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "geometry.h"
-#include <boost/container/flat_set.hpp>
 
 namespace scenimp {
 
@@ -19,6 +18,7 @@ namespace scenimp {
 
         const point& pos() const;
         point& pos();
+        int z() const;
 
     protected:
         virtual void do_render(rendering& r) = 0;
@@ -26,11 +26,11 @@ namespace scenimp {
     private:
         point pos_;
         group* parent_;
+        int z_;
 
         friend class scene;
+        friend class group;
     };
-
-    typedef boost::container::flat_set<node* > node_list;
 
 }
 
