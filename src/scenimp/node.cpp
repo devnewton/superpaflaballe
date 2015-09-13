@@ -5,7 +5,8 @@
 namespace scenimp {
 
     node::node()
-    : parent_(nullptr) {
+    : pos_(0, 0)
+    , parent_(nullptr) {
     }
 
     node::~node() {

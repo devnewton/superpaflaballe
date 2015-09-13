@@ -1,19 +1,21 @@
 #include "sprite.h"
+#include "rendering.h"
 
 namespace scenimp {
 
     sprite::sprite()
     : angle_(0.0)
-    , flip_(SDL_FLIP_NONE)
     , width_(32)
-    , height_(32){
+    , height_(32)
+    , flip_(SDL_FLIP_NONE) {
     }
 
     sprite::~sprite() {
     }
 
-    void sprite::render(rendering& r) {
-        SDL_Rect rect_ = {x : -width_/2, y : -height_/2, w: width_, h: height_};
+    void sprite::do_render(rendering& r) {
+        const point& pos = r.current_pos();
+        SDL_Rect rect_ = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
 
         SDL_RenderCopyEx(r.renderer(), play_->current_frame().image().get(), &play_->current_frame().rect(), &rect_, angle_, NULL, flip_);
     }

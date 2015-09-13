@@ -6,7 +6,8 @@
 namespace scenimp {
 
     rendering::rendering(SDL_Renderer* r)
-    : renderer_(r) {
+    : pos_(0, 0),
+    renderer_(r) {
     }
 
     rendering::~rendering() {

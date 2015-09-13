@@ -67,6 +67,17 @@ namespace bourrines {
     private:
         World* world_;
     };
+    
+    template<typename World>
+    class basic_system : public World::system_type {
+    public:
+
+        virtual void process(const active_entity_list&) override {
+            process();
+        }
+
+        virtual void process() = 0;
+    };
 
     template<typename World>
     class processing_system : public World::system_type {

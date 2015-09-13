@@ -34,6 +34,7 @@ add_executable(superpaflaballe
  src/scenimp/assets.cpp
  src/scenimp/scene.cpp
  src/scenimp/screen.cpp
+ src/scenimp/sprite.cpp
  src/scenimp/group.cpp
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp

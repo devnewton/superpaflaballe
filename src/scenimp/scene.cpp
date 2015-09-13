@@ -1,25 +1,26 @@
 #include "scene.h"
 #include "rendering.h"
+#include <iostream>
+#include <exception>
 
 namespace scenimp {
 
     scene::scene(SDL_Renderer* r)
     : renderer_(r) {
-        root_ = &new_group();
-
+        root_ = group_pool_.construct();
     }
 
     scene::~scene() {
     }
 
     group& scene::new_group(group* parent, int z) {
-        group* s = group_pool_.malloc();
+        group* s = group_pool_.construct();
         attach(s, parent,z);
         return *s;
     }
 
     sprite& scene::new_sprite(group* parent, int z) {
-        sprite* s = sprite_pool_.malloc();
+        sprite* s = sprite_pool_.construct();
         attach(s, parent, z);
         return *s;
     }
@@ -28,7 +29,8 @@ namespace scenimp {
         if (nullptr == parent) {
             parent = root_;
         }
-        parent->children_.insert(node_in_group(child, z));
+        node_in_group n(child, z);
+        parent->children_.insert(n);
         child->parent_ = parent;
     }
 

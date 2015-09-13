@@ -11,8 +11,6 @@ namespace scenimp {
         sprite(const sprite& orig) = delete;
         virtual ~sprite();
 
-        virtual void render(rendering& r);
-
         std::shared_ptr< nanim::play > play();
         void set_play(std::shared_ptr< nanim::play > play);
 
@@ -27,6 +25,9 @@ namespace scenimp {
 
         int height() const;
         void set_height(int h);
+        
+    protected:
+        virtual void do_render(rendering& r) override;
 
     private:
         double angle_;
