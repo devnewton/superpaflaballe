@@ -2,7 +2,6 @@
 
 #include "group.h"
 #include "sprite.h"
-#include <boost/pool/object_pool.hpp>
 #include <SDL.h>
 
 namespace scenimp {
@@ -13,20 +12,13 @@ namespace scenimp {
         scene(const scene&) = delete;
         ~scene();
         
-        group& new_group(group* parent = nullptr, int z=0);
-        sprite& new_sprite(group* parent = nullptr, int z=0);
-        
-        void delete_sprite(sprite* s);
-        void delete_group(group* g);
-        
+        std::shared_ptr< group > new_group(std::shared_ptr< group > parent = nullptr);
+        std::shared_ptr< sprite > new_sprite(std::shared_ptr< group > parent = nullptr);
+
         void render();
 
     private:
-        void attach(node* child, group* parent, int z);
-        void detach(node* child);
-        boost::object_pool<group> group_pool_;
-        boost::object_pool<sprite> sprite_pool_;
-        group* root_;
+        std::shared_ptr<group> root_;
         SDL_Renderer* renderer_;
     };
 

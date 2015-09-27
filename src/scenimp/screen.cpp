@@ -14,7 +14,7 @@ namespace scenimp {
             SDL_Quit();
             throw sdl_exception();
         }
-        renderer_ = SDL_CreateRenderer(window_, -1, 0);
+        renderer_ = SDL_CreateRenderer(window_, -1, 0/*SDL_RENDERER_SOFTWARE*/);
         if (!renderer_) {
             SDL_DestroyWindow(window_);
             SDL_Quit();

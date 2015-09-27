@@ -14,9 +14,21 @@ namespace scenimp {
     }
 
     void group::do_render(rendering& r) {
-        for (auto& c : children_.get<container::z_index>()) {
-            c.node->render(r);
+        for (auto& n : children_) {
+            n->render(r);
         }
     }
-
+    void group::add(std::shared_ptr< node > node) {
+        if(node->parent_.lock()) {
+            throw new std::runtime_error("node is already in a group");
+        }
+        node->parent_ = std::static_pointer_cast<group>( shared_from_this() );
+        children_.insert(node);
+    }
+    void group::remove(std::shared_ptr< node > node) {
+        if(node->parent_.lock() != shared_from_this()) {
+            throw new std::runtime_error("cannot remove a node that does not belong to this group");
+        }
+        children_.erase(node);
+    }
 }

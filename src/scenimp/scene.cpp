@@ -6,46 +6,29 @@
 namespace scenimp {
 
     scene::scene(SDL_Renderer* r)
-    : renderer_(r) {
-        root_ = group_pool_.construct();
+    : root_(std::make_shared<group>())
+    , renderer_(r) {
     }
 
     scene::~scene() {
     }
 
-    group& scene::new_group(group* parent, int z) {
-        group* s = group_pool_.construct();
-        attach(s, parent,z);
-        return *s;
-    }
-
-    sprite& scene::new_sprite(group* parent, int z) {
-        sprite* s = sprite_pool_.construct();
-        attach(s, parent, z);
-        return *s;
-    }
-
-    void scene::attach(node* child, group* parent, int z) {
-        if (nullptr == parent) {
+    std::shared_ptr<group> scene::new_group(std::shared_ptr<group> parent) {
+        auto g = std::make_shared<group>();
+        if (!parent) {
             parent = root_;
         }
-        node_in_group n(child, z);
-        parent->children_.insert(n);
-        child->parent_ = parent;
+        parent->add(g);
+        return g;
     }
 
-    void scene::delete_sprite(sprite* s) {
-        detach(s);
-        sprite_pool_.free(s);
-    }
-
-    void scene::delete_group(group* g) {
-        detach(g);
-        group_pool_.free(g);
-    }
-
-    void scene::detach(node* child) {
-        child->parent_->children_.erase(child);
+    std::shared_ptr<sprite> scene::new_sprite(std::shared_ptr<group> parent) {
+        auto s = std::make_shared<sprite>();
+        if (!parent) {
+            parent = root_;
+        }
+        parent->add(s);
+        return s;
     }
 
     void scene::render() {

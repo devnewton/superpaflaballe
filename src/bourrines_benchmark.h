@@ -19,7 +19,13 @@ namespace superpaflaballe {
     };
 
     struct sprite_component {
-        scenimp::sprite* sprite_;
+        std::shared_ptr<scenimp::sprite> sprite_;
+        
+        ~sprite_component() {
+            if(sprite_) {
+                sprite_->remove();
+            }
+        }
     };
 
     typedef bourrines::default_world<dir_component, life_component, sprite_component> world;

@@ -8,12 +8,14 @@ namespace scenimp {
     class scene;
     class rendering;
 
-    class node {
+    class node : public std::enable_shared_from_this<node> {
     public:
         node();
         node(const node&) = delete;
         virtual ~node();
-
+        
+        void remove();
+        
         void render(rendering& r);
 
         const point& pos() const;
@@ -24,9 +26,8 @@ namespace scenimp {
 
     private:
         point pos_;
-        group* parent_;
+        std::weak_ptr<group> parent_;
 
-        friend class scene;
         friend class group;
     };
 

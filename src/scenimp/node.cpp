@@ -5,11 +5,16 @@
 namespace scenimp {
 
     node::node()
-    : pos_(0, 0)
-    , parent_(nullptr) {
+    : pos_(0, 0) {
     }
 
     node::~node() {
+    }
+    
+    void node::remove() {
+        if(auto parent = parent_.lock()) {
+            parent->remove(shared_from_this());
+        }
     }
 
     const point& node::pos() const {

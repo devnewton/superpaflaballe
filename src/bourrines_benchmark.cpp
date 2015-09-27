@@ -61,24 +61,23 @@ namespace superpaflaballe {
         }
 
         virtual void process(bourrines::entity e) override {
-            scenimp::point& pos = get<sprite_component>(e).sprite_->pos();
-            dir_component& dir = get<dir_component>(e);
+            auto& sprite = get<sprite_component>(e).sprite_;
 
+            sprite->set_angle(sprite->angle() + 1.0);
+
+            auto& pos = sprite->pos();
+            dir_component& dir = get<dir_component>(e);
             pos.x(pos.x() + dir.dx_);
             pos.y(pos.y() + dir.dy_);
-
             if (pos.x() < 0) {
                 dir.dx_ = -dir.dx_;
             }
-
             if (pos.y() < 0) {
                 dir.dy_ = -dir.dy_;
             }
-
             if (pos.x() >= screen_.logical_screen_width()) {
                 dir.dx_ = -dir.dx_;
             }
-
             if (pos.y() >= screen_.logical_screen_height()) {
                 dir.dy_ = -dir.dy_;
             }
@@ -96,10 +95,10 @@ namespace superpaflaballe {
         : scene_(s) {
         }
 
-        virtual void process() {
+        virtual void process() override {
             scene_.render();
         }
-
+        
     private:
         scenimp::scene& scene_;
     };
@@ -117,14 +116,13 @@ namespace superpaflaballe {
     }
 
     bourrines_benchmark::~bourrines_benchmark() {
-        std::cout << "bourrines_benchmark accumulated ticks: " << timer_.format() << std::endl;
     }
 
     void bourrines_benchmark::create_ned() {
         bourrines::entity e = world_.create_entity();
-        scenimp::sprite& sprite = scene_.new_sprite();
-        world_.add<sprite_component>(e).sprite_ = &sprite;
-        auto& pos = sprite.pos();
+        auto sprite = scene_.new_sprite();
+        world_.add<sprite_component>(e).sprite_ = sprite;
+        auto& pos = sprite->pos();
 
         pos.x(std::rand() % screen_.logical_screen_width());
         pos.y(std::rand() % screen_.logical_screen_height());
@@ -133,7 +131,7 @@ namespace superpaflaballe {
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
         dir.dy_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
 
-        sprite.set_play(ned_anim_->play(scenimp::nanim::loop));
+        sprite->set_play(ned_anim_->play(scenimp::nanim::loop));
         world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
 
         world_.changed(e);
