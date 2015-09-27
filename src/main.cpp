@@ -74,7 +74,7 @@ namespace superpaflaballe {
 
             state_benchmark(my_context ctx)
             : boost::statechart::state< state_benchmark, state_running >(ctx)
-            , benchmark_(this->outermost_context().screen_, 10000, 60 * 10) {
+            , benchmark_(this->outermost_context().screen_, 1000, 60 * 10) {
             }
 
             boost::statechart::result react(const event_tick&) {
@@ -104,8 +104,6 @@ int main(int, char**) {
 
         superpaflaballe::statechart::event_sdl event_sdl;
         superpaflaballe::statechart::event_tick event_tick;
-        auto font = machine.screen_.assets().font("ProFontWindows.ttf", 12);
-        auto text_texture = machine.screen_.create_text_texture(font, "plop");
         
         FPSmanager fps;
         SDL_initFramerate(&fps);
@@ -116,7 +114,6 @@ int main(int, char**) {
             }
             SDL_RenderClear(machine.screen_.renderer());
             machine.process_event(event_tick);
-            SDL_RenderCopy(machine.screen_.renderer(), text_texture.get(), nullptr, nullptr);
             SDL_RenderPresent(machine.screen_.renderer());
             SDL_framerateDelay(&fps);
         }

@@ -19,11 +19,12 @@ namespace superpaflaballe {
     };
 
     struct sprite_component {
+        std::shared_ptr<scenimp::group> group_;
         std::shared_ptr<scenimp::sprite> sprite_;
         
         ~sprite_component() {
-            if(sprite_) {
-                sprite_->remove();
+            if(group_) {
+                group_->remove_from_parent();
             }
         }
     };
@@ -45,6 +46,7 @@ namespace superpaflaballe {
         scenimp::screen& screen_;
         scenimp::scene scene_;
         std::shared_ptr< scenimp::nanim::collection > ned_anim_;
+        std::shared_ptr< TTF_Font > ned_font_;
         boost::timer::auto_cpu_timer timer_;
         int remaining_ticks_;
     };

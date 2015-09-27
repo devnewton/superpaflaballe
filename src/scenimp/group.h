@@ -16,8 +16,8 @@ namespace scenimp {
         virtual ~group();
 
         const node_set& children() const;
-        void add(std::shared_ptr< node > node);
-        void remove(std::shared_ptr< node > node);
+        void add_child(std::shared_ptr< node > node);
+        void remove_child(std::shared_ptr< node > node);
 
     protected:
         virtual void do_render(rendering& r);

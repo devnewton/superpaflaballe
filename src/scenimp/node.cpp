@@ -11,9 +11,9 @@ namespace scenimp {
     node::~node() {
     }
     
-    void node::remove() {
+    void node::remove_from_parent() {
         if(auto parent = parent_.lock()) {
-            parent->remove(shared_from_this());
+            parent->remove_child(shared_from_this());
         }
     }
 

@@ -14,7 +14,7 @@ namespace scenimp {
         node(const node&) = delete;
         virtual ~node();
         
-        void remove();
+        void remove_from_parent();
         
         void render(rendering& r);
 

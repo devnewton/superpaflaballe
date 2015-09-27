@@ -18,7 +18,7 @@ namespace scenimp {
         if (!parent) {
             parent = root_;
         }
-        parent->add(g);
+        parent->add_child(g);
         return g;
     }
 
@@ -27,8 +27,17 @@ namespace scenimp {
         if (!parent) {
             parent = root_;
         }
-        parent->add(s);
+        parent->add_child(s);
         return s;
+    }
+    
+    std::shared_ptr<label> scene::new_label(std::shared_ptr<group> parent) {
+        auto l = std::make_shared<label>();
+        if (!parent) {
+            parent = root_;
+        }
+        parent->add_child(l);
+        return l;
     }
 
     void scene::render() {

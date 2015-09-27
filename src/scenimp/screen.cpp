@@ -51,9 +51,4 @@ namespace scenimp {
         return *assets_;
     }
 
-    std::shared_ptr< SDL_Texture > screen::create_text_texture(std::shared_ptr< TTF_Font > font, const std::string& str, const SDL_Color& color) {
-        std::unique_ptr<SDL_Surface, void (*)(SDL_Surface *) > text_surface(TTF_RenderText_Blended(font.get(), str.c_str(), color), SDL_FreeSurface);
-        return std::shared_ptr< SDL_Texture >(SDL_CreateTextureFromSurface(renderer(), text_surface.get()), SDL_DestroyTexture);
-    }
-
 }

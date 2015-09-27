@@ -62,10 +62,10 @@ namespace superpaflaballe {
 
         virtual void process(bourrines::entity e) override {
             auto& sprite = get<sprite_component>(e).sprite_;
-
             sprite->set_angle(sprite->angle() + 1.0);
 
-            auto& pos = sprite->pos();
+            auto& group = get<sprite_component>(e).group_;
+            auto& pos = group->pos();
             dir_component& dir = get<dir_component>(e);
             pos.x(pos.x() + dir.dx_);
             pos.y(pos.y() + dir.dy_);
@@ -98,7 +98,7 @@ namespace superpaflaballe {
         virtual void process() override {
             scene_.render();
         }
-        
+
     private:
         scenimp::scene& scene_;
     };
@@ -109,6 +109,8 @@ namespace superpaflaballe {
     , remaining_ticks_(num_ticks) {
         timer_.stop();
         ned_anim_ = screen.assets().animations("ned.json");
+        ned_font_ = screen_.assets().font("ProFontWindows.ttf", 12);
+
         world_.add_system(1, std::unique_ptr<hera_system>(new hera_system(*this, num_entity)));
         world_.add_system(2, std::unique_ptr<hades_system>(new hades_system()));
         world_.add_system(3, std::unique_ptr<move_system>(new move_system(screen)));
@@ -120,18 +122,27 @@ namespace superpaflaballe {
 
     void bourrines_benchmark::create_ned() {
         bourrines::entity e = world_.create_entity();
-        auto sprite = scene_.new_sprite();
-        world_.add<sprite_component>(e).sprite_ = sprite;
-        auto& pos = sprite->pos();
+        auto group = scene_.new_group();
+        auto sprite = scene_.new_sprite(group);
+        
+        auto& component = world_.add<sprite_component>(e);
+        component.sprite_ = sprite;
+        component.group_ = group;
 
+        auto& pos = group->pos();
         pos.x(std::rand() % screen_.logical_screen_width());
         pos.y(std::rand() % screen_.logical_screen_height());
-
+        
         dir_component& dir = world_.add<dir_component>(e);
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
         dir.dy_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
-
         sprite->set_play(ned_anim_->play(scenimp::nanim::loop));
+
+        auto label = scene_.new_label(group);
+        label->set_font(ned_font_);
+        label->set_text("ned");
+        label->pos().y(32);
+
         world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
 
         world_.changed(e);
