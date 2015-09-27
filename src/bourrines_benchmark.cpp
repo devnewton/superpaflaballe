@@ -11,15 +11,16 @@ namespace superpaflaballe {
     public:
 
         virtual bool accept(bourrines::entity e) override {
-            return has<life_component>(e);
+            return has<life_component>(e) && has<sprite_component>(e);
         }
 
         virtual void process(bourrines::entity e) override {
             life_component& life = get<life_component>(e);
-
+            get<sprite_component>(e).lifebar_->set_progress(life.life_);
             if (life.life_-- < 0) {
                 world().kill_entity(e);
             }
+
         }
 
     };
@@ -124,7 +125,7 @@ namespace superpaflaballe {
         bourrines::entity e = world_.create_entity();
         auto group = scene_.new_group();
         auto sprite = scene_.new_sprite(group);
-        
+
         auto& component = world_.add<sprite_component>(e);
         component.sprite_ = sprite;
         component.group_ = group;
@@ -132,7 +133,7 @@ namespace superpaflaballe {
         auto& pos = group->pos();
         pos.x(std::rand() % screen_.logical_screen_width());
         pos.y(std::rand() % screen_.logical_screen_height());
-        
+
         dir_component& dir = world_.add<dir_component>(e);
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
         dir.dy_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
@@ -142,10 +143,16 @@ namespace superpaflaballe {
         label->set_font(ned_font_);
         label->set_text("ned");
         label->pos().y(32);
-        
+
         scene_.new_rectangle(group)->set_color({255, 0, 0, 255});
 
-        world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
+
+        int life = world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
+
+        component.lifebar_ = scene_.new_progressbar(group);
+        component.lifebar_->pos().y(-16);
+        component.lifebar_->set_maximum(life);
+        component.lifebar_->set_progress(life);
 
         world_.changed(e);
     }

@@ -15,11 +15,11 @@ namespace scenimp {
     void rectangle::do_render(rendering& r) {
         prerender(r);
         const point& pos = r.current_pos();
-        SDL_Rect rect_ = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
+        SDL_Rect rect = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
         if (filled_) {
-            SDL_RenderFillRect(r.renderer(), &rect_);
+            SDL_RenderFillRect(r.renderer(), &rect);
         } else {
-            SDL_RenderDrawRect(r.renderer(), &rect_);
+            SDL_RenderDrawRect(r.renderer(), &rect);
         }
         postrender(r);
     }

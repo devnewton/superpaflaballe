@@ -40,6 +40,7 @@ add_executable(superpaflaballe
  src/scenimp/group.cpp
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp
+ src/scenimp/progressbar.cpp
  src/scenimp/rectangle.cpp
  src/scenimp/rendering.cpp
  src/scenimp/geometry.cpp

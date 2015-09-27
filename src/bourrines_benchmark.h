@@ -5,6 +5,7 @@
 #include "scenimp/nanim.h"
 #include "scenimp/assets.h"
 #include "bourrines/bourrines.h"
+#include "scenimp/progressbar.h"
 
 #include <boost/timer/timer.hpp>
 
@@ -21,6 +22,7 @@ namespace superpaflaballe {
     struct sprite_component {
         std::shared_ptr<scenimp::group> group_;
         std::shared_ptr<scenimp::sprite> sprite_;
+        std::shared_ptr<scenimp::progressbar> lifebar_;
         
         ~sprite_component() {
             if(group_) {
