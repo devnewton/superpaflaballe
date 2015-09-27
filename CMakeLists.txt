@@ -35,10 +35,12 @@ add_executable(superpaflaballe
  src/scenimp/label.cpp
  src/scenimp/scene.cpp
  src/scenimp/screen.cpp
+ src/scenimp/shape_base.cpp
  src/scenimp/sprite.cpp
  src/scenimp/group.cpp
  src/scenimp/nanim.cpp
  src/scenimp/node.cpp
+ src/scenimp/rectangle.cpp
  src/scenimp/rendering.cpp
  src/scenimp/geometry.cpp
  src/scenimp/sdl_exception.cpp

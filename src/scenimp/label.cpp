@@ -3,7 +3,9 @@
 
 namespace scenimp {
 
-    const SDL_Color defaultLabelColor = {255, 255, 255, 0};
+    namespace {
+        const SDL_Color defaultLabelColor = {255, 255, 255, 0};
+    }
 
     label::label()
     : color_(defaultLabelColor)

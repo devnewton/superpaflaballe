@@ -142,6 +142,8 @@ namespace superpaflaballe {
         label->set_font(ned_font_);
         label->set_text("ned");
         label->pos().y(32);
+        
+        scene_.new_rectangle(group)->set_color({255, 0, 0, 255});
 
         world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
 
