@@ -68,18 +68,18 @@ namespace superpaflaballe {
             auto& group = get<sprite_component>(e).group_;
             auto& pos = group->pos();
             dir_component& dir = get<dir_component>(e);
-            pos.x(pos.x() + dir.dx_);
-            pos.y(pos.y() + dir.dy_);
-            if (pos.x() < 0) {
+            pos.x += dir.dx_;
+            pos.y +=  dir.dy_;
+            if (pos.x < 0) {
                 dir.dx_ = -dir.dx_;
             }
-            if (pos.y() < 0) {
+            if (pos.y < 0) {
                 dir.dy_ = -dir.dy_;
             }
-            if (pos.x() >= screen_.logical_screen_width()) {
+            if (pos.x >= screen_.logical_screen_width()) {
                 dir.dx_ = -dir.dx_;
             }
-            if (pos.y() >= screen_.logical_screen_height()) {
+            if (pos.y >= screen_.logical_screen_height()) {
                 dir.dy_ = -dir.dy_;
             }
         }
@@ -131,8 +131,8 @@ namespace superpaflaballe {
         component.group_ = group;
 
         auto& pos = group->pos();
-        pos.x(std::rand() % screen_.logical_screen_width());
-        pos.y(std::rand() % screen_.logical_screen_height());
+        pos.x = std::rand() % screen_.logical_screen_width();
+        pos.y = std::rand() % screen_.logical_screen_height();
 
         dir_component& dir = world_.add<dir_component>(e);
         dir.dx_ = (1 + (std::rand() % 10)) * ((std::rand() % 1) ? -1 : 1);
@@ -142,7 +142,7 @@ namespace superpaflaballe {
         auto label = scene_.new_label(group);
         label->set_font(ned_font_);
         label->set_text("ned");
-        label->pos().y(32);
+        label->pos().y = 32;
 
         scene_.new_rectangle(group)->set_color({255, 0, 0, 255});
 
@@ -150,7 +150,7 @@ namespace superpaflaballe {
         int life = world_.add<life_component>(e).life_ = remaining_ticks_ > 0 ? std::rand() % remaining_ticks_ : 1;
 
         component.lifebar_ = scene_.new_progressbar(group);
-        component.lifebar_->pos().y(-16);
+        component.lifebar_->pos().y = -16;
         component.lifebar_->set_maximum(life);
         component.lifebar_->set_progress(life);
 

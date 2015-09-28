@@ -43,7 +43,6 @@ add_executable(superpaflaballe
  src/scenimp/progressbar.cpp
  src/scenimp/rectangle.cpp
  src/scenimp/rendering.cpp
- src/scenimp/geometry.cpp
  src/scenimp/sdl_exception.cpp
  src/intro.cpp
  src/main.cpp)

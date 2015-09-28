@@ -20,9 +20,9 @@ namespace scenimp {
 
     void label::do_render(rendering& r) {
         if (font_ && !text_.empty()) {
-            const point& pos = r.current_pos();
+            const SDL_Point& pos = r.current_pos();
             update(r);
-            SDL_Rect rect_ = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
+            SDL_Rect rect_ = {pos.x + -width_ / 2, pos.y + -height_ / 2, width_, height_};
             SDL_RenderCopyEx(r.renderer(), texture_.get(), NULL, &rect_, angle_, NULL, flip_);
         }
     }

@@ -5,7 +5,7 @@
 namespace scenimp {
 
     node::node()
-    : pos_(0, 0) {
+    : pos_({0, 0}) {
     }
 
     node::~node() {
@@ -17,11 +17,11 @@ namespace scenimp {
         }
     }
 
-    const point& node::pos() const {
+    const SDL_Point& node::pos() const {
         return pos_;
     }
 
-    point& node::pos() {
+    SDL_Point& node::pos() {
         return pos_;
     }
 

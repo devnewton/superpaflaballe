@@ -14,8 +14,8 @@ namespace scenimp {
 
     void rectangle::do_render(rendering& r) {
         prerender(r);
-        const point& pos = r.current_pos();
-        SDL_Rect rect = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
+        const SDL_Point& pos = r.current_pos();
+        SDL_Rect rect = {pos.x + -width_ / 2, pos.y + -height_ / 2, width_, height_};
         if (filled_) {
             SDL_RenderFillRect(r.renderer(), &rect);
         } else {

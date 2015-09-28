@@ -14,8 +14,8 @@ namespace scenimp {
     }
 
     void sprite::do_render(rendering& r) {
-        const point& pos = r.current_pos();
-        SDL_Rect rect = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
+        const SDL_Point& pos = r.current_pos();
+        SDL_Rect rect = {pos.x + -width_ / 2, pos.y + -height_ / 2, width_, height_};
         SDL_RenderCopyEx(r.renderer(), play_->current_frame().image().get(), &play_->current_frame().rect(), &rect, angle_, NULL, flip_);
     }
 

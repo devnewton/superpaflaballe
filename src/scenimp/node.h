@@ -1,6 +1,7 @@
 #pragma once
 
-#include "geometry.h"
+#include <SDL_rect.h>
+#include <memory>
 
 namespace scenimp {
 
@@ -18,14 +19,14 @@ namespace scenimp {
         
         void render(rendering& r);
 
-        const point& pos() const;
-        point& pos();
+        const SDL_Point& pos() const;
+        SDL_Point& pos();
 
     protected:
         virtual void do_render(rendering& r) = 0;
 
     private:
-        point pos_;
+        SDL_Point pos_;
         std::weak_ptr<group> parent_;
 
         friend class group;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "node.h"
+#include <boost/container/flat_set.hpp>
 
 namespace scenimp {
 

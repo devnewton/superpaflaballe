@@ -17,13 +17,13 @@ namespace scenimp {
     }
 
     void progressbar::do_render(rendering& r) {
-        const point& pos = r.current_pos();
+        const SDL_Point& pos = r.current_pos();
 
-        SDL_Rect rect = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, width_, height_};
+        SDL_Rect rect = {pos.x + -width_ / 2, pos.y + -height_ / 2, width_, height_};
         SDL_SetRenderDrawColor(r.renderer(), background_color_.r, background_color_.g, background_color_.b, background_color_.a);
         SDL_RenderFillRect(r.renderer(), &rect);
 
-        SDL_Rect rect_ = {pos.x() + -width_ / 2, pos.y() + -height_ / 2, (progress_ * width_) / maximum_, height_};
+        SDL_Rect rect_ = {pos.x + -width_ / 2, pos.y + -height_ / 2, (progress_ * width_) / maximum_, height_};
         SDL_SetRenderDrawColor(r.renderer(), progress_color_.r, progress_color_.g, progress_color_.b, progress_color_.a);
         SDL_RenderFillRect(r.renderer(), &rect_);
 

@@ -6,8 +6,8 @@
 namespace scenimp {
 
     rendering::rendering(SDL_Renderer* r)
-    : pos_(0, 0),
-    renderer_(r) {
+    : pos_({0, 0})
+    , renderer_(r) {
     }
 
     rendering::~rendering() {
@@ -18,18 +18,18 @@ namespace scenimp {
     }
 
     void rendering::push_pos(const node& n) {
-        const point& node_pos = n.pos();
-        pos_.x(pos_.x() + node_pos.x());
-        pos_.y(pos_.y() + node_pos.y());
+        const SDL_Point& node_pos = n.pos();
+        pos_.x += node_pos.x;
+        pos_.y += node_pos.y;
     }
 
-    const point& rendering::current_pos() const {
+    const SDL_Point& rendering::current_pos() const {
         return pos_;
     }
 
     void rendering::pop_pos(const node& n) {
-        const point& node_pos = n.pos();
-        pos_.x(pos_.x() - node_pos.x());
-        pos_.y(pos_.y() - node_pos.y());
+        const SDL_Point& node_pos = n.pos();
+        pos_.x -= node_pos.x;
+        pos_.y -= node_pos.y;
     }
 }
